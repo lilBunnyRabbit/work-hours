@@ -1,12 +1,12 @@
 import React from "react";
-import { IWHFile, WHFile } from "./WFile";
-import { WFileContext } from "./WFileContext";
+import { IWHFile, WHFile } from "./WHFile";
+import { WHFileContext } from "./WHFileContext";
 
 export interface WHFileProviderProps {
   children: React.ReactNode;
 }
 
-export const WFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
+export const WHFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
   const [whFile, setWHFile] = React.useState<WHFile | null>(null);
   const [data, setData] = React.useState<IWHFile | null>(null);
 
@@ -35,7 +35,7 @@ export const WFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
   console.log(data);
 
   return (
-    <WFileContext.Provider
+    <WHFileContext.Provider
       value={{
         whFile,
         data,
@@ -48,9 +48,9 @@ export const WFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
 };
 
 export const useWHFile = () => {
-  const context = React.useContext(WFileContext);
+  const context = React.useContext(WHFileContext);
   if (!context) {
-    throw new Error(`${useWHFile.name} must be used within ${WFileProvider.name}`);
+    throw new Error(`${useWHFile.name} must be used within ${WHFileProvider.name}`);
   }
 
   return context;

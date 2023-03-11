@@ -1,9 +1,9 @@
 import React from "react";
 import { PaperButton } from "../components/buttons/PaperButton";
-import { useWFile } from "../utils/w-file/useWFile";
+import { useWHFile } from "../utils/wh-file/useWHFile";
 
 export const IndexView: React.FC = () => {
-  const { open, create } = useWFile();
+  const { open, create } = useWHFile();
 
   return (
     <div className="flex flex-col justify-center items-center gap-6 w-full h-screen">

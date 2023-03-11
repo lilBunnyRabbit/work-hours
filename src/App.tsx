@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
-import { WFileProvider } from "./utils/w-file/WFileProvider";
+import { WHFileProvider } from "./utils/wh-file/WHFileProvider";
 
 let fileHandle;
 
@@ -26,8 +26,8 @@ export default function App() {
   React.useEffect(() => {}, []);
 
   return (
-    <WFileProvider>
+    <WHFileProvider>
       <RouterProvider router={router} />
-    </WFileProvider>
+    </WHFileProvider>
   );
 }
