@@ -1,0 +1,51 @@
+.card-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: theme("colors.zinc.300");
+  background: theme("colors.zinc.900") !important;
+  box-shadow: theme("boxShadow.xl");
+  font-weight: theme("fontWeight.normal");
+  font-size: theme("fontSize.lg");
+  border: 2px solid currentColor;
+
+  aspect-ratio: 1 / 1;
+
+  &:hover {
+    color: theme("colors.zinc.900");
+    background: theme("colors.zinc.300") !important;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:focus-visible {
+    color: theme("colors.primary");
+    outline: none !important;
+  }
+
+  &[data-empty="false"] {
+    color: theme("colors.amber.300");
+
+    &:hover {
+      color: theme("colors.zinc.900");
+      background: theme("colors.amber.300") !important;
+    }
+  }
+
+  &[data-full="true"] {
+    color: theme("colors.lime.300");
+
+    &:hover {
+      color: theme("colors.zinc.900");
+      background: theme("colors.lime.300") !important;
+    }
+  }
+
+  &[data-disabled="true"] {
+    color: theme("colors.zinc.600") !important;
+    background: theme("colors.zinc.900") !important;
+    pointer-events: none;
+  }
+}

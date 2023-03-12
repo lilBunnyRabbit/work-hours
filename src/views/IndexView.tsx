@@ -1,9 +1,14 @@
 import React from "react";
+import { Navigate } from "react-router-dom";
 import { PaperButton } from "../components/buttons/PaperButton";
 import { useWHFile } from "../utils/wh-file/useWHFile";
 
 export const IndexView: React.FC = () => {
-  const { open, create } = useWHFile();
+  const { open, create, whFile } = useWHFile();
+
+  if (whFile) {
+    return <Navigate to="/years" />;
+  }
 
   return (
     <div className="flex flex-col justify-center items-center gap-6 w-full h-screen">

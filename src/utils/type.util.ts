@@ -31,3 +31,5 @@ export function isArray<T>(value: unknown): value is T[] {
 export function isArrayOfType<T>(value: unknown, isType: (element: unknown) => element is T): value is T[] {
   return Array.isArray(value) && value.every((element) => isType(element));
 }
+
+export type PickPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;

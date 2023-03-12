@@ -1,4 +1,5 @@
-import { isObject } from "../type.util";
+import { PickPartial } from "../type.util";
+import { isWHFile, IWHFile, IWHFileMetadata } from "./WHFileTypes";
 
 const { showOpenFilePicker, showSaveFilePicker }: any = window;
 type FileHandle = any;
@@ -7,18 +8,18 @@ type FileHandle = any;
 
 const VERSION: IWHFile["__version"] = "whf_0.0.0";
 
-const INITIAL_DATA: Omit<IWHFile, "__version"> = {}; 
-
-export interface IWHFile {
-  __version: `whf_${number}.${number}.${number}`;
-}
-
-const isWHFile = (value: unknown): value is IWHFile => {
-  const regex = /whf_\d+\.\d+\.\d+/;
-
-  return (
-    isObject(value) && "__version" in value && typeof value["__version"] === "string" && regex.test(value["__version"])
-  );
+const INITIAL_DATA: PickPartial<IWHFile, "__version"> = {
+  years: {
+    2022: {
+      5: {
+        16: {
+          workLog: [],
+          tasks: [],
+          notes: [],
+        },
+      },
+    },
+  },
 };
 
 export class WHFile {
@@ -31,7 +32,7 @@ export class WHFile {
 
   constructor(private fileHandle: FileHandle) {}
 
-  static async open(): Promise<[WHFile, IWHFile]> {
+  static async open(): Promise<[WHFile, IWHFile, IWHFileMetadata]> {
     const [fileHandle] = await showOpenFilePicker({
       types: [WHFile.TYPE],
     });
@@ -49,10 +50,10 @@ export class WHFile {
       throw new Error('File is not a valid "Work Hours File".');
     }
 
-    return [new WHFile(fileHandle), data];
+    return [new WHFile(fileHandle), data, { filename: file.name }];
   }
 
-  static async create(): Promise<[WHFile, IWHFile]> {
+  static async create(): Promise<[WHFile, IWHFile, IWHFileMetadata]> {
     const fileHandle = await showSaveFilePicker({
       types: [WHFile.TYPE],
     });
@@ -60,9 +61,11 @@ export class WHFile {
     if (fileHandle.kind !== "file") throw new Error("Not a file.");
 
     const whFile = new WHFile(fileHandle);
+    const file: File = await fileHandle.getFile();
+
     const data = await whFile.write(INITIAL_DATA);
 
-    return [whFile, data];
+    return [whFile, data, { filename: file.name }];
   }
 
   public async getFile() {
@@ -72,7 +75,7 @@ export class WHFile {
     return file;
   }
 
-  public async write(data: Omit<IWHFile, "__version">): Promise<IWHFile> {
+  public async write(data: PickPartial<IWHFile, "__version">): Promise<IWHFile> {
     if (!this.fileHandle) throw new Error("No selected file.");
 
     const writeData: IWHFile = { ...data, __version: VERSION };
