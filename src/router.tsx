@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppLayout } from "./layouts/AppLayout";
 import { IndexView } from "./views/IndexView";
 import { YearsView } from "./views/years/YearsView";
@@ -45,6 +45,10 @@ export const router = createBrowserRouter([
             ],
           },
         ],
+      },
+      {
+        path: "*",
+        element: <Navigate to="/years" />,
       },
     ],
   },

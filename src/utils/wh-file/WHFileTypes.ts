@@ -17,12 +17,13 @@ export interface IWHFileDay {
   }
 }
 
-type IWHFileMonth = Partial<Record<number | string, IWHFileDay>>;
-type IWHFileYear = Partial<Record<number | string, IWHFileMonth>>;
+export type IWHFileMonth = Partial<Record<number | string, IWHFileDay>>;
+export type IWHFileYear = Partial<Record<number | string, IWHFileMonth>>;
+export type IWHFileYears = Partial<Record<number | string, IWHFileYear>>;
 
 export interface IWHFile {
   __version: `whf_${number}.${number}.${number}`;
-  years?: Partial<Record<number | string, IWHFileYear>>;
+  years?: IWHFileYears;
 }
 
 export interface IWHFileMetadata {

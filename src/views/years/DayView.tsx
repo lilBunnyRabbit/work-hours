@@ -1,19 +1,19 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
+import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
+import { useAsync } from "../../hooks/useAsync";
 import { formatDay, months } from "../../utils/date.util";
 import { useWHFile } from "../../utils/wh-file/useWHFile";
 
 export const DayView: React.FC = () => {
-  const { data, createDay, hasDay } = useWHFile();
   const { day, month, year } = useParams();
-
-  const dayData = React.useMemo(() => data?.years?.[year!]?.[month!]?.[day!], []);
+  const { getDay } = useWHFile();
+  const { data, error } = useAsync(async () => await getDay(day!, month!, year!));
 
   React.useEffect(() => {
-    if (hasDay(day!, year!, month!)) return;
-    createDay(day!, year!, month!);
-  }, [day, month, year, hasDay, createDay]);
+    console.log("DAY", data);
+  }, [data]);
 
   return (
     <Page
@@ -31,8 +31,9 @@ export const DayView: React.FC = () => {
         </>
       }
     >
-      {!dayData && "Loading..."}
-      {dayData && JSON.stringify(dayData)}
+      <LoadingOverlay visible={!data} error={error} size="xl" />
+
+      {data && JSON.stringify(data)}
     </Page>
   );
 };

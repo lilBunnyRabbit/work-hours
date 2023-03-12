@@ -1,26 +1,20 @@
 import { PickPartial } from "../type.util";
-import { isWHFile, IWHFile, IWHFileMetadata } from "./WHFileTypes";
+import { isWHFile, IWHFile, IWHFileDay, IWHFileMetadata } from "./WHFileTypes";
 
 const { showOpenFilePicker, showSaveFilePicker }: any = window;
 type FileHandle = any;
 
 // https://developer.chrome.com/articles/file-system-access/
 
-const VERSION: IWHFile["__version"] = "whf_0.0.0";
+export const WHF_VERSION: IWHFile["__version"] = "whf_0.0.0";
 
-const INITIAL_DATA: PickPartial<IWHFile, "__version"> = {
-  years: {
-    2022: {
-      5: {
-        16: {
-          workLog: [],
-          tasks: [],
-          notes: [],
-        },
-      },
-    },
-  },
+export const INITIAL_DAY: IWHFileDay = {
+  workLog: [],
+  tasks: [],
+  notes: [],
 };
+
+const INITIAL_DATA: PickPartial<IWHFile, "__version"> = {};
 
 export class WHFile {
   static TYPE = {
@@ -78,7 +72,7 @@ export class WHFile {
   public async write(data: PickPartial<IWHFile, "__version">): Promise<IWHFile> {
     if (!this.fileHandle) throw new Error("No selected file.");
 
-    const writeData: IWHFile = { ...data, __version: VERSION };
+    const writeData: IWHFile = { ...data, __version: WHF_VERSION };
 
     const writable = await this.fileHandle.createWritable();
     await writable.write(JSON.stringify(writeData));

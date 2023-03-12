@@ -1,0 +1,20 @@
+.icon-button {
+  all: unset;
+  height: fit-content;
+  width: fit-content;
+  cursor: pointer;
+  color: currentColor;
+
+  &:focus-visible {
+    outline: {
+      width: 1px;
+      style: solid;
+      offset: 0px;
+      color: theme("colors.primary");
+    }
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
