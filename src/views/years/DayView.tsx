@@ -31,7 +31,7 @@ export const DayView: React.FC = () => {
         </>
       }
     >
-      <LoadingOverlay visible={!data} error={error} size="xl" />
+      <LoadingOverlay visible={!data} error={error} size="2xl" />
 
       {data && JSON.stringify(data)}
     </Page>

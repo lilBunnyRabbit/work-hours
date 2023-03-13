@@ -28,7 +28,7 @@ export const DaysView: React.FC = () => {
         </>
       }
     >
-      <LoadingOverlay visible={!data} error={error} size="xl" />
+      <LoadingOverlay visible={!data} error={error} size="2xl" />
 
       {data && (
         <CardContainer

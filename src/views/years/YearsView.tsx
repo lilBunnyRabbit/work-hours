@@ -1,12 +1,10 @@
 import React from "react";
-import { PaperButton } from "../../components/buttons/PaperButton";
 import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
 import { useAsync } from "../../hooks/useAsync";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { useWHFile } from "../../utils/wh-file/useWHFile";
-import { INITIAL_DAY, WHF_VERSION } from "../../utils/wh-file/WHFile";
 
 export const YearsView: React.FC = () => {
   const { getYears, getDaysCount } = useWHFile();
@@ -39,8 +37,9 @@ export const YearsView: React.FC = () => {
   }, [data]);
 
   return (
-    <Page>
-      <LoadingOverlay visible={!data} error={error} size="xl" />
+    <Page title="Select year">
+      <LoadingOverlay visible={!data} error={error} size="2xl" />
+
       {data && (
         <CardContainer
           columns={3}

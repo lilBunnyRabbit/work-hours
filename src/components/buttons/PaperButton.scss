@@ -1,13 +1,13 @@
 .paper-button {
   color: theme("colors.zinc.900");
-  background: theme("colors.zinc.100") !important;
+  background: theme("colors.zinc.300") !important;
   padding: 8px 16px;
   box-shadow: theme("boxShadow.xl");
   font-weight: theme("fontWeight.medium");
   border: 1px solid currentColor;
 
   &:hover {
-    color: theme("colors.zinc.100");
+    color: theme("colors.zinc.300");
     background: theme("colors.zinc.900") !important;
   }
 

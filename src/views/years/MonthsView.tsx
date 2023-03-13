@@ -18,7 +18,7 @@ export const MonthsView: React.FC = () => {
 
   return (
     <Page title={<Link to="/years" className="hover:underline" children={year} />}>
-      <LoadingOverlay visible={!data} error={error} size="xl" />
+      <LoadingOverlay visible={!data} error={error} size="2xl" />
 
       {data && (
         <CardContainer
