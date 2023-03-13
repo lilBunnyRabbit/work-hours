@@ -12,10 +12,13 @@ export const Page: React.FC<Omit<React.ComponentProps<"div">, keyof PageProps> &
   ...props
 }) => {
   return (
-    <div className={classNames("flex flex-col justify-between items-center flex-1 gap-8 p-8", className)} {...props}>
+    <div
+      className={classNames("flex flex-col justify-between items-center w-full h-full gap-8 p-8 relative", className)}
+      {...props}
+    >
       {title && <h1 className="mt-8" children={title} />}
 
-      <div className="flex flex-1 w-full justify-center items-center" children={children} />
+      <div className="flex w-full h-full justify-center items-center relative overflow-hidden" children={children} />
     </div>
   );
 };

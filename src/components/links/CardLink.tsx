@@ -21,8 +21,12 @@ export const CardContainer: React.FC<React.ComponentProps<"div"> & CardContainer
 }) => {
   return (
     <div
-      className={classNames("grid w-full h-fit gap-4 max-w-[640px] justify-center content-center", className)}
-      style={{ gridTemplateColumns: `repeat(${columns}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)`, ...style }}
+      className={classNames("grid w-full h-full gap-4 max-w-[640px] justify-center content-center relative", className)}
+      style={{
+        gridTemplateColumns: `repeat(${columns}, 1fr)`,
+        gridTemplateRows: `repeat(${rows}, 1fr)`,
+        ...style,
+      }}
       {...props}
     />
   );

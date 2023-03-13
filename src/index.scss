@@ -12,6 +12,11 @@ html {
   outline-color: theme("colors.lime.500") !important;
 }
 
+body {
+  overflow: hidden;
+  margin: 0px;
+}
+
 @layer base {
   h1 {
     font: {
