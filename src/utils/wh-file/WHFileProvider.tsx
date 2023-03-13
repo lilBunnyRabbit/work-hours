@@ -1,4 +1,5 @@
 import React from "react";
+import { showNotification } from "../../components/notifications/Notifications";
 import { WHFile } from "./WHFile";
 import { WHFileContext, WHFileContextProps } from "./WHFileContext";
 
@@ -17,9 +18,13 @@ export const WHFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
       setWHFile(whFile);
       setData(data);
       setMetadata(metadata);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      // TODO: Notification
+      showNotification({
+        type: "error",
+        title: "Failed to open file",
+        description: error?.message,
+      });
     }
   }, []);
 
@@ -29,25 +34,37 @@ export const WHFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
       setWHFile(whFile);
       setData(data);
       setMetadata(metadata);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      // TODO: Notification
+      showNotification({
+        type: "error",
+        title: "Failed to create file",
+        description: error?.message,
+      });
     }
   }, []);
 
   const handleWrite: WHFileContextProps["write"] = React.useCallback(
     async (data) => {
       if (!whFile) {
-        // TODO: Notification
+        showNotification({
+          type: "error",
+          title: "Failed to save file",
+          description: "No active file.",
+        });
         return;
       }
 
       try {
         await whFile.write(data);
         setData(data);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
-        // TODO: Notification
+        showNotification({
+          type: "error",
+          title: "Failed to save file",
+          description: error?.message,
+        });
       }
     },
     [whFile]

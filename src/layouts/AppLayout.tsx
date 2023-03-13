@@ -1,5 +1,6 @@
 import React from "react";
 import { Navigate, Outlet, useLocation, useMatch } from "react-router-dom";
+import { Notifications } from "../components/notifications/Notifications";
 import { useWHFile } from "../utils/wh-file/useWHFile";
 
 export const AppLayout: React.FC = () => {
@@ -21,6 +22,8 @@ export const AppLayout: React.FC = () => {
           children={metadata.filename}
         />
       )}
+
+      <Notifications />
     </div>
   );
 };
