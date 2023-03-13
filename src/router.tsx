@@ -6,55 +6,50 @@ import { DayView } from "./views/years/DayView";
 import { MonthsView } from "./views/years/MonthsView";
 import { YearsView } from "./views/years/YearsView";
 
-export const router = createHashRouter(
-  [
-    {
-      path: "/",
-      element: <AppLayout />,
-      children: [
-        {
-          index: true,
-          element: <IndexView />,
-        },
-        {
-          path: "years",
-          children: [
-            {
-              index: true,
-              element: <YearsView />,
-            },
-            {
-              path: ":year/months",
-              children: [
-                {
-                  index: true,
-                  element: <MonthsView />,
-                },
-                {
-                  path: ":month/days",
-                  children: [
-                    {
-                      index: true,
-                      element: <DaysView />,
-                    },
-                    {
-                      path: ":day",
-                      element: <DayView />,
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          path: "*",
-          element: <Navigate to="/years" />,
-        },
-      ],
-    },
-  ],
+export const router = createHashRouter([
   {
-    basename: "work-hours",
-  }
-);
+    path: "/",
+    element: <AppLayout />,
+    children: [
+      {
+        index: true,
+        element: <IndexView />,
+      },
+      {
+        path: "years",
+        children: [
+          {
+            index: true,
+            element: <YearsView />,
+          },
+          {
+            path: ":year/months",
+            children: [
+              {
+                index: true,
+                element: <MonthsView />,
+              },
+              {
+                path: ":month/days",
+                children: [
+                  {
+                    index: true,
+                    element: <DaysView />,
+                  },
+                  {
+                    path: ":day",
+                    element: <DayView />,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "*",
+        element: <Navigate to="/years" />,
+      },
+    ],
+  },
+]);

@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:prod": "tsc && vite build --base=/work-hours/",
     "preview": "vite preview",
-    "deploy": "npm run build & node deploy.js"
+    "deploy": "npm run build:prod & node deploy.js"
   },
   "dependencies": {
     "react": "^18.2.0",
