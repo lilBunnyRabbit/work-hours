@@ -1,5 +1,4 @@
 import React from "react";
-import { PaperButton } from "../components/buttons/PaperButton";
 import { Icon } from "../components/icons";
 import { useAutoQueue } from "../hooks/useAutoQueue";
 import { createEventHandler, useEventHandler } from "../utils/event.util";
@@ -27,24 +26,21 @@ export const Toolbar: React.FC = () => {
 
   return (
     <footer
-      className="toolbar flex w-screen h-[24px] px-2 items-center justify-between text-[11px] text-[#8D8D9E] font-light bg-[#101012]"
+      className="toolbar flex w-screen h-[26px] px-2 items-center justify-between text-[11px] text-[#8D8D9E] font-light bg-[#101012]"
       style={{ lineHeight: "11px" }}
     >
-      <PaperButton
-        onClick={() => {
-          showNotification({
-            title: Date.now().toString(),
-            description: "hahahhah ahahah hahah ahaha hahah haha ahaha haha hahh hahah",
-          });
-        }}
-        children="click"
-      />
-
-      <div children={metadata?.filename} />
+      <div className="flex flex-row items-center gap-1">
+        {metadata && (
+          <>
+            <Icon.File color="currentColor" height={14} />
+            {metadata.filename}
+          </>
+        )}
+      </div>
 
       {notification && (
         <div
-          className="toolbar-notification flex flex-row items-center gap-2 max-w-[33vw]"
+          className="toolbar-notification flex flex-row items-center gap-1 max-w-[33vw]"
           data-type={notification.type || "error"}
         >
           <Icon.Alert color="currentColor" height={14} />

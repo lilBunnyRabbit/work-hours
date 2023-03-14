@@ -58,6 +58,11 @@ export const WHFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
       try {
         await whFile.write(data);
         setData(data);
+
+        showNotification({
+          type: "success",
+          title: "File updated",
+        });
       } catch (error: any) {
         console.error(error);
         showNotification({

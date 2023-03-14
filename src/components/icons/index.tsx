@@ -3,6 +3,7 @@ import { AlertIcon } from "./definitions/AlertIcon";
 import { BarsLoaderIcon } from "./definitions/BarsLoaderIcon";
 import { ChevronLeftIcon } from "./definitions/ChevronLeftIcon";
 import { ChevronRightIcon } from "./definitions/ChevronRightIcon";
+import { FileIcon } from "./definitions/FileIcon";
 
 export interface BaseIconProps {
   color?: string;
@@ -17,4 +18,5 @@ export const Icon = {
   ChevronLeft: ChevronLeftIcon,
   ChevronRight: ChevronRightIcon,
   Alert: AlertIcon,
+  File: FileIcon,
 } satisfies Record<string, Icon>;
