@@ -17,9 +17,9 @@ export const IndexView: React.FC = () => {
         <u className="font-medium">Open</u> or <u className="font-medium">Create</u> project
       </h1>
 
-      <div className="flex flex-row gap-4">
-        <PaperButton className="w-[24vw] text-lg" onClick={open} children="Open" />
-        <PaperButton className="w-[24vw] text-lg" onClick={create} children="Create" />
+      <div className="flex flex-row gap-4 w-full max-w-[640px]">
+        <PaperButton className="w-full text-lg" onClick={open} children="Open" />
+        <PaperButton className="w-full text-lg" onClick={create} children="Create" />
       </div>
     </div>
   );

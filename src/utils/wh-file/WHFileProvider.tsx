@@ -1,5 +1,5 @@
 import React from "react";
-import { showNotification } from "../../components/notifications/Notifications";
+import { showNotification } from "../../layouts/Toolbar";
 import { WHFile } from "./WHFile";
 import { WHFileContext, WHFileContextProps } from "./WHFileContext";
 

@@ -1,0 +1,11 @@
+.toolbar {
+  &-notification {
+    &[data-type="success"] {
+      color: theme("colors.lime.700");
+    }
+
+    &[data-type="error"] {
+      color: theme("colors.red.800");
+    }
+  }
+}
