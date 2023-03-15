@@ -79,12 +79,7 @@ export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange 
   const overlay = React.useMemo(() => {
     if (deleting) {
       return (
-        <div
-          className="grid w-full h-full items-center gap-2"
-          style={{
-            gridTemplateColumns: "1fr min-content min-content",
-          }}
-        >
+        <div className="grid grid-cols-[1fr_min-content_min-content] w-full h-full items-center gap-2">
           Delete log?
           <LogInputButton onClick={() => setDeleting(false)} children="Cancel" />
           <LogInputButton onClick={onDelete} variant="error" children="Delete" />
@@ -101,10 +96,9 @@ export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange 
     <div className="log-input relative flex flex-col w-full border border-zinc-300 bg-zinc-900">
       <div
         className={classNames(
-          "grid gap-4 w-full py-2 px-4 items-center",
+          "grid grid-cols-[min-content_min-content_1fr_min-content] gap-4 w-full py-2 px-4 items-center",
           (editing || note) && "border-b border-b-zinc-300"
         )}
-        style={{ gridTemplateColumns: "min-content min-content 1fr min-content" }}
       >
         <input
           type="time"
@@ -138,7 +132,7 @@ export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange 
             onClick={() => {
               setEditing(!editing);
               if (editing) {
-                handleChange({ note });
+                handleChange({ note: note });
               }
             }}
             children={icon}
@@ -155,6 +149,7 @@ export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange 
         className="flex-1 bg-zinc-800"
         editing={editing}
         placeholder="Note..."
+        setEditing={setEditing}
       />
 
       {overlay && (

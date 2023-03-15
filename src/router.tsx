@@ -2,7 +2,7 @@ import { createHashRouter, Navigate } from "react-router-dom";
 import { AppLayout } from "./layouts/AppLayout";
 import { IndexView } from "./views/IndexView";
 import { DaysView } from "./views/years/DaysView";
-import { DayView } from "./views/years/DayView";
+import { DayView } from "./views/years/day/DayView";
 import { MonthsView } from "./views/years/MonthsView";
 import { YearsView } from "./views/years/YearsView";
 

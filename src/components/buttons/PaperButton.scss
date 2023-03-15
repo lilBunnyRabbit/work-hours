@@ -4,11 +4,12 @@
   padding: 8px 16px;
   box-shadow: theme("boxShadow.xl");
   font-weight: theme("fontWeight.medium");
-  border: 1px solid currentColor;
+  border: 1px solid theme("colors.zinc.300");
 
   &:hover {
     color: theme("colors.zinc.300");
     background: theme("colors.zinc.900") !important;
+    border-color: currentColor !important;
   }
 
   &:active {
@@ -22,12 +23,13 @@
 
   &[data-variant="success"] {
     background: theme("colors.lime.600") !important;
+    border-color: theme("colors.lime.600");
 
     &:hover {
       color: theme("colors.lime.600");
       background: theme("colors.zinc.900") !important;
     }
-  
+
     &:active {
       transform: translateY(1px);
     }
@@ -35,12 +37,13 @@
 
   &[data-variant="error"] {
     background: theme("colors.red.600") !important;
+    border-color: theme("colors.red.600");
 
     &:hover {
       color: theme("colors.red.600");
       background: theme("colors.zinc.900") !important;
     }
-  
+
     &:active {
       transform: translateY(1px);
     }
@@ -48,6 +51,7 @@
 
   &:disabled {
     background: theme("colors.zinc.700") !important;
+    border-color: theme("colors.zinc.700");
     color: theme("colors.zinc.900");
     transform: none !important;
     cursor: not-allowed;

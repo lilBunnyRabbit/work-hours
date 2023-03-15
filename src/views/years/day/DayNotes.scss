@@ -1,0 +1,5 @@
+.day-note-input {
+  &::-webkit-scrollbar-track {
+    border-left: 1px solid theme("colors.zinc.300");
+  }
+}

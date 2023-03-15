@@ -1,33 +1,16 @@
-import React, { useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
 import { WHFileProvider } from "./utils/wh-file/WHFileProvider";
 
-let fileHandle;
-
-async function getFile() {
-  // open file picker
-  [fileHandle] = await (window as any).showOpenFilePicker();
-
-  if (fileHandle.kind === "file") {
-    // run file code
-    const file = await fileHandle.getFile();
-    const contents = await file.text();
-
-    console.log({ file, contents });
-  } else if (fileHandle.kind === "directory") {
-    // run directory code
-  }
-}
+const queryClient = new QueryClient();
 
 export default function App() {
-  const [count, setCount] = useState(0);
-
-  React.useEffect(() => {}, []);
-
   return (
-    <WHFileProvider>
-      <RouterProvider router={router} />
-    </WHFileProvider>
+    <QueryClientProvider client={queryClient}>
+      <WHFileProvider>
+        <RouterProvider router={router} />
+      </WHFileProvider>
+    </QueryClientProvider>
   );
 }

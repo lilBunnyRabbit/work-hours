@@ -1,14 +1,14 @@
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
-import { useAsyncQuery } from "../../hooks/useAsync";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { useYears } from "../../utils/wh-file/WHFileHooks";
 
 export const YearsView: React.FC = () => {
   const yearsHandler = useYears();
-  const { data: yearsInfo, error } = useAsyncQuery(yearsHandler.getInfo);
+  const { data: yearsInfo, error } = useQuery(["years-info"], yearsHandler.getInfo)
 
   const [year, setYear] = React.useState(new Date().getFullYear());
 

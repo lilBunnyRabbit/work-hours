@@ -10,8 +10,7 @@ export const WHF_VERSION: IWHFile["__version"] = "whf_0.0.0";
 
 export const INITIAL_DAY: IWHFileDay = {
   workLogs: [],
-  tasks: [],
-  notes: [],
+  notes: "",
 };
 
 const INITIAL_DATA: PickPartial<IWHFile, "__version" | "__lastUpdated"> = {};

@@ -1,9 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
-import { useAsyncQuery } from "../../hooks/useAsync";
 import { months } from "../../utils/date.util";
 import { useYear } from "../../utils/wh-file/WHFileHooks";
 
@@ -11,7 +11,7 @@ export const MonthsView: React.FC = () => {
   const { year } = useParams();
 
   const yearHandler = useYear(year!);
-  const { data: yearInfo, error } = useAsyncQuery(yearHandler.getInfo);
+  const { data: yearInfo, error } = useQuery(["year-info", year], yearHandler.getInfo);
 
   React.useEffect(() => {
     console.log("MONTHS", yearInfo);

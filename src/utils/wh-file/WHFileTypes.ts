@@ -7,11 +7,7 @@ export interface IWHFileDay {
     to?: string;
     note?: string;
   }>;
-  tasks: Array<{
-    name: string;
-    description?: string;
-  }>;
-  notes: string[];
+  notes: string;
   report?: {
     hours: number;
     description: string;

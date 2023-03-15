@@ -1,17 +1,17 @@
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
-import { useAsyncQuery } from "../../hooks/useAsync";
 import { generateDays, months } from "../../utils/date.util";
 import { useMonth } from "../../utils/wh-file/WHFileHooks";
 
 export const DaysView: React.FC = () => {
-  const { month, year } = useParams();
+  const { year, month } = useParams();
 
   const monthHanler = useMonth(year!, month!);
-  const { data: monthData, error } = useAsyncQuery(monthHanler.get);
+  const { data: monthData, error } = useQuery(["month", year, month], monthHanler.get);
 
   const days = React.useMemo(() => generateDays(Number(year), Number(month)), [month, year]);
 

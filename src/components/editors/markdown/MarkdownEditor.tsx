@@ -1,8 +1,6 @@
 import React from "react";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { ghcolors } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { classNames } from "../../../utils/class.util";
+import { Markdown } from "../../markdown/Markdown";
 import "./MarkdownEditor.scss";
 
 interface MarkdownEditorProps {
@@ -10,11 +8,23 @@ interface MarkdownEditorProps {
   onChange: (value: string) => void;
 
   editing?: boolean;
+  setEditing?: (editing: boolean) => void;
   className?: string;
   placeholder?: string;
+  resizable?: boolean;
+
+  textareaClassName?: string;
 }
 
-export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange, className, editing, placeholder }) => {
+export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
+  value,
+  onChange,
+  className,
+  editing,
+  setEditing,
+  placeholder,
+  textareaClassName,
+}) => {
   const ref = React.useRef<HTMLTextAreaElement>();
 
   React.useEffect(() => {
@@ -22,6 +32,28 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange,
     ref.current.style.height = "0px";
     ref.current.style.height = `${ref.current.scrollHeight}px`;
   }, [value, editing]);
+
+  React.useEffect(() => {
+    if (!setEditing || !ref.current) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey && e.key.toLowerCase() === "s") || e.key === "Escape") {
+        e.preventDefault();
+        return setEditing(false);
+      }
+    };
+
+    if (editing) {
+      ref.current.addEventListener("keydown", handleKeyDown);
+    } else {
+      ref.current.removeEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      if (!ref.current) return;
+      ref.current.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [editing, setEditing]);
 
   return (
     <div className={classNames("relative flex text-zinc-300 bg-zinc-900", className)}>
@@ -35,33 +67,14 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange,
           rows={1}
           className={classNames(
             "w-full min-h-[56px] p-4 outline-none text-inherit bg-inherit overflow-y-hidden placeholder:text-zinc-500",
-            !editing && "hidden"
+            !editing && "hidden",
+            textareaClassName
           )}
         />
 
         {!editing && value && (
           <div className="w-full h-full p-4 bg-inherit">
-            <ReactMarkdown
-              components={{
-                code({ node, inline, className, children, ...props }) {
-                  const match = /language-(\w+)/.exec(className || "");
-                  return !inline && match ? (
-                    <SyntaxHighlighter
-                      children={String(children).replace(/\n$/, "")}
-                      style={ghcolors as any}
-                      language={match[1]}
-                      PreTag="div"
-                      {...props}
-                    />
-                  ) : (
-                    <code className={className} {...props}>
-                      {children}
-                    </code>
-                  );
-                },
-              }}
-              children={value}
-            />
+            <Markdown children={value} />
           </div>
         )}
       </div>
