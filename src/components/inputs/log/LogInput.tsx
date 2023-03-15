@@ -150,7 +150,7 @@ export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange 
       </div>
 
       <MarkdownEditor
-        value={note || workLog.note || ""}
+        value={note || ""}
         onChange={setNote}
         className="flex-1 bg-zinc-800"
         editing={editing}

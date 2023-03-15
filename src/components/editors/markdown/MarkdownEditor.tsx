@@ -3,9 +3,6 @@ import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { ghcolors } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { classNames } from "../../../utils/class.util";
-import { isUndefined } from "../../../utils/type.util";
-import { IconButton } from "../../buttons/IconButton";
-import { Icon } from "../../icons";
 import "./MarkdownEditor.scss";
 
 interface MarkdownEditorProps {
@@ -17,43 +14,27 @@ interface MarkdownEditorProps {
   placeholder?: string;
 }
 
-export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
-  value,
-  onChange,
-  className,
-  editing: initialEditing,
-  placeholder,
-}) => {
-  const [editing, setEditing] = React.useState<boolean>(() => (isUndefined(initialEditing) ? true : initialEditing));
-
-  const icon = React.useMemo(() => {
-    return React.createElement(editing ? Icon.FileText : Icon.Edit, { height: 24 });
-  }, [editing]);
+export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange, className, editing, placeholder }) => {
+  const ref = React.useRef<HTMLTextAreaElement>();
 
   React.useEffect(() => {
-    if (!isUndefined(initialEditing)) {
-      setEditing(initialEditing);
-    }
-  }, [initialEditing]);
+    if (!ref.current) return;
+    ref.current.style.height = "0px";
+    ref.current.style.height = `${ref.current.scrollHeight}px`;
+  }, [value, editing]);
 
   return (
-    <div
-      className={classNames(
-        "relative flex text-zinc-300 bg-zinc-900",
-        isUndefined(initialEditing) && "min-h-[40px]",
-        className
-      )}
-    >
+    <div className={classNames("relative flex text-zinc-300 bg-zinc-900", className)}>
       <div className="relative flex flex-1 overflow-y-hidden">
         <textarea
+          ref={ref as any}
           placeholder={placeholder}
           key={`markdown-editor-textarea`}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           rows={1}
           className={classNames(
-            "w-full h-full p-4 outline-none text-inherit bg-inherit overflow-y-scroll placeholder:text-zinc-500",
-            isUndefined(initialEditing) && "min-h-[40px]",
+            "w-full min-h-[56px] p-4 outline-none text-inherit bg-inherit overflow-y-hidden placeholder:text-zinc-500",
             !editing && "hidden"
           )}
         />
@@ -84,10 +65,6 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
           </div>
         )}
       </div>
-
-      {isUndefined(initialEditing) && (
-        <IconButton className="absolute top-2 right-6" onClick={() => setEditing(!editing)} children={icon} />
-      )}
     </div>
   );
 };
