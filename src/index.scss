@@ -36,6 +36,18 @@ body {
   background-image: url(./assets/resizer.svg);
 }
 
+input[type="time"] {
+  background: inherit;
+  color: inherit;
+  outline: none;
+  cursor: text;
+
+  &::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(96%) sepia(4%) saturate(139%) hue-rotate(201deg) brightness(86%) contrast(100%);
+  }
+}
+
 @layer base {
   h1 {
     font: {

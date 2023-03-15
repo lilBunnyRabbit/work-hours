@@ -1,4 +1,8 @@
 .markdown {
+  & > :first-child {
+    margin-top: 0px;
+  }
+
   * {
     line-height: 1.5;
   }
@@ -13,10 +17,6 @@
     border-bottom: 1px solid currentColor;
     margin-top: 16px;
     margin-bottom: 8px;
-
-    &:first-child {
-      margin-top: 0px;
-    }
   }
 
   h1 {

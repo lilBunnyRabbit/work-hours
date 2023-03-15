@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 import { PaperButton } from "../../../components/buttons/PaperButton";
 import { LogInput } from "../../../components/inputs/log/LogInput";
 import { showNotification } from "../../../layouts/Toolbar";
+import { formatTime } from "../../../utils/date.util";
+import { totalWorkLogTime } from "../../../utils/wh-file/WHFile.util";
 import { useDayQuery } from "../../../utils/wh-file/WHFileQueries";
 import { IWHFileDay } from "../../../utils/wh-file/WHFileTypes";
 import { DayColumn } from "./DayView";
@@ -19,6 +21,7 @@ export const DayWorkLogs: React.FC = () => {
     handler: dayHandler,
   } = useDayQuery(params.year!, params.month!, params.day!);
   const workLogs = React.useMemo(() => day?.workLogs || [], [day]);
+  const totalTime = React.useMemo(() => totalWorkLogTime(workLogs), [workLogs]);
 
   const updateMutation = useMutation(["day-update", params.year, params.month, params.day], dayHandler.update, {
     onSuccess: () => refetch(),
@@ -32,7 +35,15 @@ export const DayWorkLogs: React.FC = () => {
   });
 
   return (
-    <DayColumn title="Work Log" loading={isLoading} error={error}>
+    <DayColumn
+      title={
+        <div className="w-full flex justify-between items-end">
+          <div>Work Log</div> <div className="text-[24px]">{formatTime(totalTime)}</div>
+        </div>
+      }
+      loading={isLoading}
+      error={error}
+    >
       <div className="work-logs flex flex-col gap-4 pr-4 overflow-y-scroll">
         {workLogs.map((workLog) => (
           <WorkLog

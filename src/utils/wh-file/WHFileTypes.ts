@@ -10,7 +10,7 @@ export interface IWHFileDay {
   notes: string;
   report?: {
     hours: number;
-    description: string;
+    notes: string;
   };
 }
 
@@ -21,7 +21,7 @@ export type IWHFileYears = Partial<Record<number | string, IWHFileYear>>;
 export interface IWHFile {
   __version: `whf_${number}.${number}.${number}`;
   __lastUpdated: number;
-  
+
   years?: IWHFileYears;
 }
 

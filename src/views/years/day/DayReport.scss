@@ -1,5 +1,5 @@
-.log-input {
-  ::-webkit-scrollbar-track {
+.day-report-input {
+  &::-webkit-scrollbar-track {
     border-left: 1px solid theme("colors.zinc.300");
   }
 }

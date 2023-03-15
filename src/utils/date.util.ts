@@ -89,3 +89,37 @@ export const parseTime = (milliseconds: number) => {
     milliseconds: Math.floor((milliseconds % 1000) / 10),
   };
 };
+
+export const padTime = (time: number) => String(time).padStart(2, "0");
+
+export const formatTime = (time: ReturnType<typeof parseTime>) => {
+  return `${padTime(time.hours)}:${padTime(time.minutes)}:${padTime(time.seconds)}`;
+};
+
+export type TimeValue = `${number}:${number}`;
+
+export const dateToTimeValue = (date: Date): TimeValue => {
+  return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}` as TimeValue;
+};
+
+export const timeValueToDate = (timeValue: TimeValue): Date => {
+  const [hours, minutes] = timeValue.split(":");
+  const date = new Date();
+  date.setHours(Number.parseInt(hours), Number.parseInt(minutes));
+  return date;
+};
+
+export const timeValueToHours = (timeValue: TimeValue): number => {
+  const [hours, minutes] = timeValue.split(":");
+  return Number.parseInt(hours) + Number.parseInt(minutes) / 60;
+};
+
+export const hoursToTimeValue = (_hours: number): TimeValue => {
+  const hours = Math.floor(_hours);
+  const minutes = Math.round((_hours - hours) * 60);
+  return `${padTime(hours)}:${padTime(minutes)}` as TimeValue;
+};
+
+export const dateToHours = (date: Date): number => {
+  return date.getHours() + date.getMinutes() / 60;
+};

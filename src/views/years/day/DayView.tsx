@@ -9,6 +9,7 @@ import { classNames } from "../../../utils/class.util";
 import { formatDay, months } from "../../../utils/date.util";
 import { useDay } from "../../../utils/wh-file/WHFileHooks";
 import { DayNotes } from "./DayNotes";
+import { DayReport } from "./DayReport";
 import "./DayView.scss";
 import { DayWorkLogs } from "./DayWorkLogs";
 
@@ -70,12 +71,12 @@ export const DayView: React.FC = () => {
         </div>
       }
     >
-      <div className="relative grid w-full h-full overflow-hidden grid-cols-[450px_1fr]">
+      <div className="relative grid w-full h-full overflow-hidden grid-cols-[450px_1fr_1fr]">
         <DayWorkLogs />
 
         <DayNotes />
 
-        {/* <DayColumn title="Report"></DayColumn> */}
+        <DayReport />
       </div>
 
       <LoadingOverlay overlay visible={deleteMutation.isLoading} error={deleteMutation.error} size="2xl" />

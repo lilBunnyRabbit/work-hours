@@ -1,33 +1,13 @@
 import React from "react";
 import { useStopWatch, UseStopWatchProps } from "../../../hooks/useStopwatch";
 import { classNames } from "../../../utils/class.util";
-import { parseTime } from "../../../utils/date.util";
+import { dateToTimeValue, formatTime, TimeValue, timeValueToDate } from "../../../utils/date.util";
 import { IWHFileDay } from "../../../utils/wh-file/WHFileTypes";
 import { IconButton } from "../../buttons/IconButton";
 import { PaperButton } from "../../buttons/PaperButton";
 import { MarkdownEditor } from "../../editors/markdown/MarkdownEditor";
 import { Icon } from "../../icons";
-import { Loader } from "../../Loader";
 import "./LogInput.scss";
-
-const padTime = (time: number) => String(time).padStart(2, "0");
-
-const formatTime = (time: ReturnType<typeof parseTime>) => {
-  return `${padTime(time.hours)}:${padTime(time.minutes)}:${padTime(time.seconds)}`;
-};
-
-type TimeValue = `${number}:${number}`;
-
-const dateToTimeValue = (date: Date): TimeValue => {
-  return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}` as TimeValue;
-};
-
-const timeValueToDate = (timeValue: TimeValue): Date => {
-  const [hours, minutes] = timeValue.split(":");
-  const date = new Date();
-  date.setHours(Number.parseInt(hours), Number.parseInt(minutes));
-  return date;
-};
 
 interface LogInputProps {
   workLog: IWHFileDay["workLogs"][number];
@@ -104,7 +84,7 @@ export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange 
           type="time"
           min="00:00"
           max={to || "24:00"}
-          value={from || ""}
+          defaultValue={from || ""}
           onChange={(e) => handleChange({ from: timeValueToDate(e.target.value as TimeValue).toISOString() })}
         />
 
@@ -113,7 +93,7 @@ export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange 
             type="time"
             min={from || "00:00"}
             max="24:00"
-            value={to || ""}
+            defaultValue={to || ""}
             onChange={(e) => handleChange({ to: timeValueToDate(e.target.value as TimeValue).toISOString() })}
           />
         ) : (
