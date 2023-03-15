@@ -2,13 +2,13 @@ import React from "react";
 import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
-import { useAsync } from "../../hooks/useAsync";
+import { useAsyncQuery } from "../../hooks/useAsync";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { useWHFile } from "../../utils/wh-file/useWHFile";
 
 export const YearsView: React.FC = () => {
   const { getYears, getDaysCount } = useWHFile();
-  const { data, error } = useAsync(getYears);
+  const { data, error } = useAsyncQuery(getYears);
   const [year, setYear] = React.useState(new Date().getFullYear());
 
   const years = React.useMemo(() => {

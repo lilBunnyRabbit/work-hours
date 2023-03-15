@@ -1,10 +1,11 @@
 import { isObject } from "../type.util";
 
 export interface IWHFileDay {
-  workLog: Array<{
+  workLogs: Array<{
+    id: string;
     from: string;
     to?: string;
-    description?: string;
+    note?: string;
   }>;
   tasks: Array<{
     name: string;
@@ -14,7 +15,7 @@ export interface IWHFileDay {
   report?: {
     hours: number;
     description: string;
-  }
+  };
 }
 
 export type IWHFileMonth = Partial<Record<number | string, IWHFileDay>>;
@@ -23,12 +24,12 @@ export type IWHFileYears = Partial<Record<number | string, IWHFileYear>>;
 
 export interface IWHFile {
   __version: `whf_${number}.${number}.${number}`;
+  __lastUpdated: number;
+  
   years?: IWHFileYears;
 }
 
-export interface IWHFileMetadata {
-  filename: string;
-}
+export type IWHFileMetadata = Pick<File, "name" | "size" | "type" | "lastModified" | "webkitRelativePath">;
 
 export const isWHFile = (value: unknown): value is IWHFile => {
   const regex = /whf_\d+\.\d+\.\d+/;

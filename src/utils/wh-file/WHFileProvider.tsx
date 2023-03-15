@@ -12,12 +12,16 @@ export const WHFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
   const [data, setData] = React.useState<WHFileContextProps["data"]>(null);
   const [metadata, setMetadata] = React.useState<WHFileContextProps["metadata"]>(null);
 
+  React.useEffect(() => {
+    console.log("WHFileProvider", data);
+  }, [data]);
+
   const handleOpen: WHFileContextProps["open"] = React.useCallback(async () => {
     try {
-      const [whFile, data, metadata] = await WHFile.open();
+      const [whFile, data] = await WHFile.open();
       setWHFile(whFile);
       setData(data);
-      setMetadata(metadata);
+      setMetadata(whFile.metadata);
     } catch (error: any) {
       console.error(error);
       showNotification({
@@ -30,10 +34,10 @@ export const WHFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
 
   const handleCreate: WHFileContextProps["create"] = React.useCallback(async () => {
     try {
-      const [whFile, data, metadata] = await WHFile.create();
+      const [whFile, data] = await WHFile.create();
       setWHFile(whFile);
       setData(data);
-      setMetadata(metadata);
+      setMetadata(whFile.metadata);
     } catch (error: any) {
       console.error(error);
       showNotification({
@@ -56,13 +60,15 @@ export const WHFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
       }
 
       try {
-        await whFile.write(data);
-        setData(data);
+        const saved = await whFile.write(data);
+        setData(saved);
 
         showNotification({
           type: "success",
           title: "File updated",
+          description: new Date().toLocaleTimeString(),
         });
+        console.log(saved);
       } catch (error: any) {
         console.error(error);
         showNotification({

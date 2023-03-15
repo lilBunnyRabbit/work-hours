@@ -1,18 +1,6 @@
 import React from "react";
+import { parseTime } from "../utils/date.util";
 import { isUndefined } from "../utils/type.util";
-
-const parseTime = (milliseconds: number) => {
-  const seconds = Math.floor(milliseconds / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-
-  return {
-    hours,
-    minutes: minutes % 60,
-    seconds: seconds % 60,
-    milliseconds: Math.floor((milliseconds % 1000) / 10),
-  };
-};
 
 export interface UseStopWatchProps {
   startTime?: number;

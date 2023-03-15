@@ -19,4 +19,37 @@
     outline: 2px solid theme("colors.primary");
     outline-offset: 2px;
   }
+
+  &[data-variant="success"] {
+    background: theme("colors.lime.600") !important;
+
+    &:hover {
+      color: theme("colors.lime.600");
+      background: theme("colors.zinc.900") !important;
+    }
+  
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+
+  &[data-variant="error"] {
+    background: theme("colors.red.600") !important;
+
+    &:hover {
+      color: theme("colors.red.600");
+      background: theme("colors.zinc.900") !important;
+    }
+  
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+
+  &:disabled {
+    background: theme("colors.zinc.700") !important;
+    color: theme("colors.zinc.900");
+    transform: none !important;
+    cursor: not-allowed;
+  }
 }

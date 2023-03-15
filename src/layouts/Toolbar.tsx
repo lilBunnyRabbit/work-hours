@@ -25,7 +25,7 @@ export const Toolbar: React.FC = () => {
   });
 
   return (
-    <footer
+    <div
       className="toolbar flex w-screen h-[26px] px-2 items-center justify-between text-[11px] text-[#8D8D9E] font-light bg-[#101012]"
       style={{ lineHeight: "11px" }}
     >
@@ -33,7 +33,7 @@ export const Toolbar: React.FC = () => {
         {metadata && (
           <>
             <Icon.File color="currentColor" height={14} />
-            {metadata.filename}
+            {metadata.name}
           </>
         )}
       </div>
@@ -50,6 +50,6 @@ export const Toolbar: React.FC = () => {
           </div>
         </div>
       )}
-    </footer>
+    </div>
   );
 };

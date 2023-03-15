@@ -1,0 +1,7 @@
+.day-view {
+  .work-logs {
+    &::-webkit-scrollbar-track {
+      border: 1px solid theme("colors.zinc.300");
+    }
+  }
+}

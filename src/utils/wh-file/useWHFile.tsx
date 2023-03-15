@@ -80,7 +80,7 @@ export const useWHFile = () => {
       }
       return days;
     }, []);
-  }, []);
+  }, [getYears]);
 
   const getDaysCount = React.useCallback(
     (year: number | string, month?: number | string): number => {
@@ -108,5 +108,6 @@ export const useWHFile = () => {
 
     getDays,
     getDaysCount,
+    updateData,
   };
 };

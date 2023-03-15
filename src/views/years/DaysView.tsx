@@ -3,14 +3,14 @@ import { Link, useParams } from "react-router-dom";
 import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
-import { useAsync } from "../../hooks/useAsync";
+import { useAsyncQuery } from "../../hooks/useAsync";
 import { generateDays, months } from "../../utils/date.util";
 import { useWHFile } from "../../utils/wh-file/useWHFile";
 
 export const DaysView: React.FC = () => {
   const { month, year } = useParams();
   const { getMonth } = useWHFile();
-  const { data, error } = useAsync(() => getMonth(month!, year!));
+  const { data, error } = useAsyncQuery(() => getMonth(month!, year!));
 
   const days = React.useMemo(() => generateDays(Number(year), Number(month)), [month, year]);
 

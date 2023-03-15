@@ -17,11 +17,37 @@ body {
   margin: 0px;
 }
 
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  width: 16px;
+  height: 16px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: theme("colors.zinc.300");
+}
+
+::-webkit-resizer {
+  background-image: url(./assets/resizer.svg);
+}
+
 @layer base {
   h1 {
     font: {
       size: theme("fontSize.4xl");
       weight: theme("fontWeight.bold");
+    }
+  }
+
+  h2 {
+    font: {
+      size: theme("fontSize.3xl");
+      weight: theme("fontWeight.medium");
     }
   }
 }

@@ -13,10 +13,14 @@ export const AppLayout: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col w-screen h-screen">
-      <Outlet />
+    <div className="relative grid w-screen h-screen overflow-y-hidden" style={{ gridTemplateRows: "1fr min-content" }}>
+      <main className="overflow-hidden">
+        <Outlet />
+      </main>
 
-      <Toolbar />
+      <div>
+        <Toolbar />
+      </div>
     </div>
   );
 };
