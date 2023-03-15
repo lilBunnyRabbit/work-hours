@@ -4,11 +4,12 @@ import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
 import { useAsyncQuery } from "../../hooks/useAsync";
 import { useKeyDown } from "../../hooks/useKeyDown";
-import { useWHFile } from "../../utils/wh-file/useWHFile";
+import { useYears } from "../../utils/wh-file/WHFileHooks";
 
 export const YearsView: React.FC = () => {
-  const { getYears, getDaysCount } = useWHFile();
-  const { data, error } = useAsyncQuery(getYears);
+  const yearsHandler = useYears();
+  const { data: yearsInfo, error } = useAsyncQuery(yearsHandler.getInfo);
+
   const [year, setYear] = React.useState(new Date().getFullYear());
 
   const years = React.useMemo(() => {
@@ -33,19 +34,19 @@ export const YearsView: React.FC = () => {
   });
 
   React.useEffect(() => {
-    console.log("YEARS", data);
-  }, [data]);
+    console.log("YEARS", yearsInfo);
+  }, [yearsInfo]);
 
   return (
     <Page title="Select year">
-      <LoadingOverlay visible={!data} error={error} size="2xl" />
+      <LoadingOverlay visible={!yearsInfo} error={error} size="2xl" />
 
-      {data && (
+      {yearsInfo && (
         <CardContainer
           columns={3}
           rows={3}
           children={years.map((year) => (
-            <CardLink key={year} to={`${year}/months`} data-empty={!getDaysCount(year)} children={year} />
+            <CardLink key={year} to={`${year}/months`} data-empty={!yearsInfo[year]?.daysCount} children={year} />
           ))}
         />
       )}
