@@ -1,6 +1,7 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
-import { PaperButton } from "../../components/buttons/PaperButton";
+import { useNavigate, useParams } from "react-router-dom";
+import { IconButton } from "../../components/buttons/IconButton";
+import { Icon } from "../../components/icons";
 import { Markdown } from "../../components/markdown/Markdown";
 import { classNames } from "../../utils/class.util";
 import { daysInMonth, months } from "../../utils/date.util";
@@ -9,6 +10,8 @@ import "./PrintView.scss";
 
 export const PDFView: React.FC = () => {
   const params = useParams();
+  const navigate = useNavigate();
+
   const { year, month } = React.useMemo(
     () => ({
       year: Number.parseInt(params.year!),
@@ -17,7 +20,6 @@ export const PDFView: React.FC = () => {
     [params]
   );
   const daysCount = React.useMemo(() => daysInMonth(year, month), [year, month]);
-  console.log({ daysCount });
 
   const { data: monthData } = useMonthQuery(year!, month!);
 
@@ -120,8 +122,10 @@ export const PDFView: React.FC = () => {
         </div>
       </Paper>
 
-      <div className="hide-print fixed top-4 right-8">
-        <Link to={`/years/${year}/months/${month}/days`} className="paper-button" children="Edit" />
+      <div className="hide-print fixed top-4 right-4">
+        <IconButton onClick={() => navigate(`/years/${year}/months/${month}/days`)}>
+          <Icon.Edit className="hover:text-lime-500" height={24} />
+        </IconButton>
       </div>
     </div>
   );

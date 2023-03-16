@@ -51,7 +51,7 @@ export const Toolbar: React.FC = () => {
 
       {notification && (
         <div
-          className="toolbar-notification flex flex-row items-end gap-1 max-w-[33vw]"
+          className="toolbar-notification flex flex-row items-end gap-1 max-w-[50vw]"
           data-type={notification.type || "error"}
         >
           <Icon.Alert color="currentColor" height={14} />

@@ -26,7 +26,7 @@ export const DayDeleteView: React.FC = () => {
       },
       onError: (error: any) => {
         showNotification({
-          type: "success",
+          type: "error",
           title: "Failed to delete day",
           description: error?.message,
         });
