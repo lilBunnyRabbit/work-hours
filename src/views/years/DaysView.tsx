@@ -1,10 +1,9 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
-import { PaperButton } from "../../components/buttons/PaperButton";
+import { useParams } from "react-router-dom";
 import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
-import { generateDays, months } from "../../utils/date.util";
+import { generateDays } from "../../utils/date.util";
 import { useMonthQuery } from "../../utils/wh-file/WHFileQueries";
 
 export const DaysView: React.FC = () => {
@@ -19,24 +18,7 @@ export const DaysView: React.FC = () => {
   }, [monthData]);
 
   return (
-    <Page
-      title={
-        <>
-          <div className="grid grid-cols-[1fr_min-content_1fr] w-full gap-6">
-            <div />
-            <div>
-              <Link to={`/years/${year}/months`} className="hover:underline" children={months[Number(month)]} />
-              &nbsp;
-              <Link to="/years" className="hover:underline" children={year} />
-            </div>
-
-            <div className="flex flex-row justify-end items-center w-full text-[18px]">
-              <Link to={`/print/${year}/${month}`} className="paper-button h-[46px]" children="Print" />
-            </div>
-          </div>
-        </>
-      }
-    >
+    <Page>
       <LoadingOverlay visible={!monthData} error={error} size="2xl" />
 
       {monthData && (

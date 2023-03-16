@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
@@ -18,7 +18,7 @@ export const MonthsView: React.FC = () => {
   }, [yearInfo]);
 
   return (
-    <Page title={<Link to="/years" className="hover:underline" children={year} />}>
+    <Page>
       <LoadingOverlay visible={!yearInfo} error={error} size="2xl" />
 
       {yearInfo && (

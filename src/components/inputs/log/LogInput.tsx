@@ -56,6 +56,13 @@ export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange 
     [onChange, workLog]
   );
 
+  const handleUpdateEditing = (editing: boolean) => {
+    setEditing(editing);
+    if (!editing) {
+      handleChange({ note: note });
+    }
+  };
+
   const overlay = React.useMemo(() => {
     if (deleting) {
       return (
@@ -109,16 +116,11 @@ export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange 
         <div className="flex flex-row items-center gap-2">
           <IconButton
             title={editing ? "Save note" : "Edit note"}
-            onClick={() => {
-              setEditing(!editing);
-              if (editing) {
-                handleChange({ note: note });
-              }
-            }}
+            onClick={() => handleUpdateEditing(!editing)}
             children={icon}
           />
           <IconButton title="Delete log" className="hover:text-red-600" onClick={() => setDeleting(true)}>
-            <Icon.Delete height={24} />
+            <Icon.Trash height={20} />
           </IconButton>
         </div>
       </div>
@@ -129,7 +131,7 @@ export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange 
         className="flex-1 bg-zinc-800"
         editing={editing}
         placeholder="Note..."
-        setEditing={setEditing}
+        setEditing={handleUpdateEditing}
       />
 
       {overlay && (

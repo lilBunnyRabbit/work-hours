@@ -67,6 +67,17 @@ export const DayReport: React.FC<DayReportProps> = ({}) => {
     };
   }, [day]);
 
+  const handleUpdateEditing = (editing: boolean) => {
+    setEditing(editing);
+    if (!editing) {
+      updateMutation.mutate((day) => {
+        if (!day.report) day.report = { hours: 0, notes: "" };
+        day.report.notes = value;
+        return day;
+      });
+    }
+  };
+
   React.useEffect(() => {
     setValue(day?.report?.notes || "");
   }, [day]);
@@ -78,16 +89,7 @@ export const DayReport: React.FC<DayReportProps> = ({}) => {
           <span children="Report" />
           <IconButton
             title={editing ? "Save note" : "Edit note"}
-            onClick={() => {
-              setEditing(!editing);
-              if (editing) {
-                updateMutation.mutate((day) => {
-                  if (!day.report) day.report = { hours: 0, notes: "" };
-                  day.report.notes = value;
-                  return day;
-                });
-              }
-            }}
+            onClick={() => handleUpdateEditing(!editing)}
             children={icon}
           />
         </div>
@@ -136,7 +138,7 @@ export const DayReport: React.FC<DayReportProps> = ({}) => {
             editing={editing}
             value={value}
             onChange={setValue}
-            setEditing={setEditing}
+            setEditing={handleUpdateEditing}
             placeholder="Note..."
           />
         </div>

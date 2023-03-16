@@ -36,7 +36,7 @@ export const YearsView: React.FC = () => {
   }, [yearsInfo]);
 
   return (
-    <Page title="Select year">
+    <Page>
       <LoadingOverlay visible={!yearsInfo} error={error} size="2xl" />
 
       {yearsInfo && (

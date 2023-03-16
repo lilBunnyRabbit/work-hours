@@ -6,8 +6,8 @@ import { MarkdownEditor } from "../../../components/editors/markdown/MarkdownEdi
 import { Icon } from "../../../components/icons";
 import { showNotification } from "../../../layouts/Toolbar";
 import { useDayQuery } from "../../../utils/wh-file/WHFileQueries";
-import { DayColumn } from "./DayView";
 import "./DayNotes.scss";
+import { DayColumn } from "./DayView";
 
 export const DayNotes: React.FC = () => {
   const params = useParams();
@@ -40,6 +40,16 @@ export const DayNotes: React.FC = () => {
     });
   }, [editing]);
 
+  const handleUpdateEditing = (editing: boolean) => {
+    setEditing(editing);
+    if (!editing) {
+      updateMutation.mutate((day) => {
+        day.notes = value;
+        return day;
+      });
+    }
+  };
+
   React.useEffect(() => {
     setValue(day?.notes || "");
   }, [day]);
@@ -51,15 +61,7 @@ export const DayNotes: React.FC = () => {
           <span children="Notes" />
           <IconButton
             title={editing ? "Save note" : "Edit note"}
-            onClick={() => {
-              setEditing(!editing);
-              if (editing) {
-                updateMutation.mutate((day) => {
-                  day.notes = value;
-                  return day;
-                });
-              }
-            }}
+            onClick={() => handleUpdateEditing(!editing)}
             children={icon}
           />
         </div>
@@ -74,7 +76,7 @@ export const DayNotes: React.FC = () => {
           editing={editing}
           value={value}
           onChange={setValue}
-          setEditing={setEditing}
+          setEditing={handleUpdateEditing}
           placeholder="Note..."
         />
       </div>

@@ -1,3 +1,4 @@
+import { sendFileEvent } from "../../layouts/Toolbar";
 import { PickPartial } from "../type.util";
 import { isWHFile, IWHFile, IWHFileDay, IWHFileMetadata } from "./WHFileTypes";
 
@@ -92,11 +93,22 @@ export class WHFile {
 
     const writeData: IWHFile = WHFile.validate({ ...data, __version: WHF_VERSION, __lastUpdated: Date.now() });
 
-    const writable = await this.fileHandle.createWritable();
-    await writable.write(JSON.stringify(writeData));
-    await writable.close();
+    sendFileEvent({ action: "writing", active: true });
+    try {
+      const writable = await this.fileHandle.createWritable();
+      await writable.write(JSON.stringify(writeData));
+      await writable.close();
 
-    return writeData;
+      sendFileEvent({ action: "writing", active: false });
+
+      return writeData;
+    } catch (error) {
+      console.error(error);
+
+      sendFileEvent({ action: "writing", active: false });
+
+      throw error;
+    }
   }
 
   public async getFile(): Promise<File> {

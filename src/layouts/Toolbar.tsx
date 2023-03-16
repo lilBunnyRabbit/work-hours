@@ -1,46 +1,57 @@
 import React from "react";
 import { Icon } from "../components/icons";
 import { useAutoQueue } from "../hooks/useAutoQueue";
+import { classNames } from "../utils/class.util";
 import { createEventHandler, useEventHandler } from "../utils/event.util";
 import { useWHFile } from "../utils/wh-file/useWHFile";
 import "./Toolbar.scss";
 
-export interface NotificationData {
+export interface NotificationEvent {
   title: string;
   description?: string;
   type?: "error" | "success";
 }
 
-export const notificationEventHandler = createEventHandler<NotificationData>("notification");
-
+export const notificationEventHandler = createEventHandler<NotificationEvent>("notification");
 export const showNotification = notificationEventHandler.dispatch;
+
+export type FileEvent = {
+  action: "writing";
+  active: boolean;
+};
+
+export const fileEventHandler = createEventHandler<FileEvent>("file");
+export const sendFileEvent = fileEventHandler.dispatch;
 
 export const Toolbar: React.FC = () => {
   const { metadata } = useWHFile();
 
-  const { item: notification, add: addNotification } = useAutoQueue<NotificationData>();
+  const [writingFile, setWritingFile] = React.useState(false);
+
+  const { item: notification, add: addNotification } = useAutoQueue<NotificationEvent>();
 
   useEventHandler(notificationEventHandler, ({ detail: notification }) => {
     addNotification(notification);
   });
 
+  useEventHandler(fileEventHandler, ({ detail }) => {
+    switch (detail.action) {
+      case "writing":
+        setWritingFile(detail.active);
+        break;
+
+      default:
+        break;
+    }
+  });
+
   return (
-    <div
-      className="toolbar flex w-screen h-[26px] px-2 items-center justify-between text-[11px] text-[#8D8D9E] font-light bg-[#101012]"
-      style={{ lineHeight: "11px" }}
-    >
-      <div className="flex flex-row items-center gap-1">
-        {metadata && (
-          <>
-            <Icon.File color="currentColor" height={14} />
-            {metadata.name}
-          </>
-        )}
-      </div>
+    <div className="toolbar flex w-screen h-[26px] px-2 items-center justify-between text-xs leading-[100%] text-zinc-400 font-light bg-[#101012] border-t border-t-zinc-700">
+      <div>{metadata && <ToolbarItem icon={writingFile ? Icon.FileText : Icon.File} children={metadata.name} />}</div>
 
       {notification && (
         <div
-          className="toolbar-notification flex flex-row items-center gap-1 max-w-[33vw]"
+          className="toolbar-notification flex flex-row items-end gap-1 max-w-[33vw]"
           data-type={notification.type || "error"}
         >
           <Icon.Alert color="currentColor" height={14} />
@@ -50,6 +61,24 @@ export const Toolbar: React.FC = () => {
           </div>
         </div>
       )}
+    </div>
+  );
+};
+
+interface ToolbarItemProps {
+  icon?: Icon;
+}
+
+const ToolbarItem: React.FC<React.ComponentProps<"div"> & ToolbarItemProps> = ({
+  icon,
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <div className={classNames("flex flex-row items-end gap-1", className)} {...props}>
+      {icon && React.createElement(icon, { color: "currentColor", height: 14 })}
+      {children}
     </div>
   );
 };

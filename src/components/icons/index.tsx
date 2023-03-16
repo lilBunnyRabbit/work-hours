@@ -7,7 +7,9 @@ import { DeleteIcon } from "./definitions/DeleteIcon";
 import { EditIcon } from "./definitions/EditIcon";
 import { FileIcon } from "./definitions/FileIcon";
 import { FileTextIcon } from "./definitions/FileTextIcon";
+import { PrintIcon } from "./definitions/PrintIcon";
 import { SaveIcon } from "./definitions/SaveIcon";
+import { TrashIcon } from "./definitions/TrashIcon";
 
 export interface BaseIconProps {
   color?: string;
@@ -27,4 +29,6 @@ export const Icon = {
   Edit: EditIcon,
   Delete: DeleteIcon,
   Save: SaveIcon,
+  Print: PrintIcon,
+  Trash: TrashIcon,
 } satisfies Record<string, Icon>;

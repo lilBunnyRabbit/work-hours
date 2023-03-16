@@ -46,12 +46,7 @@ export const DayWorkLogs: React.FC = () => {
     >
       <div className="work-logs flex flex-col gap-4 pr-4 overflow-y-scroll">
         {workLogs.map((workLog) => (
-          <WorkLog
-            key={`work-log-${workLog.id}`}
-            workLog={workLog}
-            updateDay={updateMutation.mutate}
-            onRefetch={refetch}
-          />
+          <WorkLog key={`work-log-${workLog.id}`} workLog={workLog} updateDay={updateMutation.mutate} />
         ))}
       </div>
 
@@ -72,10 +67,9 @@ export const DayWorkLogs: React.FC = () => {
 interface WorkLogProps {
   workLog: IWHFileDay["workLogs"][number];
   updateDay: UseMutateFunction<IWHFileDay, any, (day: IWHFileDay) => IWHFileDay | Promise<IWHFileDay>, unknown>;
-  onRefetch: () => void;
 }
 
-const WorkLog: React.FC<WorkLogProps> = ({ workLog, updateDay, onRefetch }) => {
+const WorkLog: React.FC<WorkLogProps> = ({ workLog, updateDay }) => {
   return (
     <LogInput
       key={`work-log-${workLog.id}`}

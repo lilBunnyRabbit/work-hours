@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate, Outlet, useLocation, useMatch } from "react-router-dom";
 import { useWHFile } from "../utils/wh-file/useWHFile";
+import { Header } from "./Header";
 import { Toolbar } from "./Toolbar";
 
 export const AppLayout: React.FC = () => {
@@ -18,14 +19,22 @@ export const AppLayout: React.FC = () => {
   }
 
   return (
-    <div className="relative grid grid-rows-[1fr_min-content] w-screen h-screen overflow-y-hidden">
-      <main className="overflow-hidden">
+    <div className="relative grid grid-rows-[min-content_1fr_min-content] w-screen h-screen overflow-y-hidden">
+      {!isIndexView && (
+        <div>
+          <Header />
+        </div>
+      )}
+
+      <main className="relative overflow-hidden">
         <Outlet />
       </main>
 
-      <div>
-        <Toolbar />
-      </div>
+      {!isIndexView && (
+        <div>
+          <Toolbar />
+        </div>
+      )}
     </div>
   );
 };
