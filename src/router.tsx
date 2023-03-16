@@ -5,6 +5,7 @@ import { DaysView } from "./views/years/DaysView";
 import { DayView } from "./views/years/day/DayView";
 import { MonthsView } from "./views/years/MonthsView";
 import { YearsView } from "./views/years/YearsView";
+import { PDFView } from "./views/years/PrintView";
 
 export const router = createHashRouter([
   {
@@ -45,6 +46,10 @@ export const router = createHashRouter([
             ],
           },
         ],
+      },
+      {
+        path: "print/:year/:month",
+        element: <PDFView />,
       },
       {
         path: "*",

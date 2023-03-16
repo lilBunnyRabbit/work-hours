@@ -7,9 +7,14 @@ export const AppLayout: React.FC = () => {
   const { whFile } = useWHFile();
   const location = useLocation();
   const isIndexView = useMatch({ path: "/", end: true });
+  const isPrintView = useMatch({ path: "/print", end: false });
 
   if (!isIndexView && !whFile) {
     return <Navigate to="/" state={{ location }} />;
+  }
+
+  if (isPrintView) {
+    return <Outlet />;
   }
 
   return (

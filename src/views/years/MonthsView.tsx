@@ -24,7 +24,6 @@ export const MonthsView: React.FC = () => {
       {yearInfo && (
         <CardContainer
           columns={4}
-          rows={3}
           children={months.map((month, i) => (
             <CardLink key={month} to={`${i}/days`} data-empty={!yearInfo[i]?.daysCount} children={month} />
           ))}

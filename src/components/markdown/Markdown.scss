@@ -60,14 +60,15 @@
 
   p > code {
     border: 1px solid theme("colors.zinc.500");
-    background: theme("colors.zinc.900");
+    // background: theme("colors.zinc.900");
     padding: 0 0.25rem;
     color: theme("colors.amber.500");
   }
 
   pre > div {
     border: 1px solid theme("colors.zinc.500") !important;
-    background: theme("colors.zinc.900") !important;
+    // background: theme("colors.zinc.900") !important;
+    border-radius: 0px !important;
   }
 
   hr {

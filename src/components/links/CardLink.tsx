@@ -9,12 +9,10 @@ export const CardLink: React.FC<LinkProps> = ({ className, ...props }) => {
 
 interface CardContainerProps {
   columns: number;
-  rows: number;
 }
 
 export const CardContainer: React.FC<React.ComponentProps<"div"> & CardContainerProps> = ({
   columns,
-  rows,
   className,
   style,
   ...props
@@ -24,7 +22,6 @@ export const CardContainer: React.FC<React.ComponentProps<"div"> & CardContainer
       className={classNames("grid w-full h-full gap-4 max-w-[640px] justify-center content-center relative", className)}
       style={{
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
-        gridTemplateRows: `repeat(${rows}, 1fr)`,
         ...style,
       }}
       {...props}

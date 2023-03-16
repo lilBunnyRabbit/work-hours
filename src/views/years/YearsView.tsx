@@ -1,14 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
 import { useKeyDown } from "../../hooks/useKeyDown";
-import { useYears } from "../../utils/wh-file/WHFileHooks";
+import { useYearsInfoQuery } from "../../utils/wh-file/WHFileQueries";
 
 export const YearsView: React.FC = () => {
-  const yearsHandler = useYears();
-  const { data: yearsInfo, error } = useQuery(["years-info"], yearsHandler.getInfo)
+  const { data: yearsInfo, error } = useYearsInfoQuery();
 
   const [year, setYear] = React.useState(new Date().getFullYear());
 
@@ -44,7 +42,6 @@ export const YearsView: React.FC = () => {
       {yearsInfo && (
         <CardContainer
           columns={3}
-          rows={3}
           children={years.map((year) => (
             <CardLink key={year} to={`${year}/months`} data-empty={!yearsInfo[year]?.daysCount} children={year} />
           ))}
