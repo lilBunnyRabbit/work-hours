@@ -6,13 +6,14 @@ import "./Markdown.scss";
 
 interface MarkdownProps {
   theme?: "light" | "dark";
+  print?: boolean;
   children: string;
 }
 
-export const Markdown: React.FC<MarkdownProps> = ({ theme = "dark", children }) => {
+export const Markdown: React.FC<MarkdownProps> = ({ theme = "dark", print, children }) => {
   return (
     <ReactMarkdown
-      className="markdown"
+      className={print ? "markdown-print" : "markdown"}
       components={{
         code({ node, inline, className, children, ...props }) {
           const match = /language-(\w+)/.exec(className || "");

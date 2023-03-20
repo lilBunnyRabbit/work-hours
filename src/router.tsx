@@ -8,7 +8,7 @@ import { DayDeleteView } from "./views/years/day/DayDeleteView";
 import { DayView } from "./views/years/day/DayView";
 import { DaysView } from "./views/years/DaysView";
 import { MonthsView } from "./views/years/MonthsView";
-import { PDFView } from "./views/years/PrintView";
+import { PrintMonthView } from "./views/print/PrintMonthView";
 import { YearsView } from "./views/years/YearsView";
 
 export const router = createHashRouter([
@@ -148,7 +148,7 @@ export const router = createHashRouter([
       },
       {
         path: "print/:year/:month",
-        element: <PDFView />,
+        element: <PrintMonthView />,
       },
       {
         path: "*",

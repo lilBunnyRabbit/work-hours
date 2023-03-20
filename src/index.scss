@@ -62,4 +62,11 @@ input[type="time"] {
       weight: theme("fontWeight.medium");
     }
   }
+
+  h3 {
+    font: {
+      size: theme("fontSize.2xl");
+      weight: theme("fontWeight.medium");
+    }
+  }
 }

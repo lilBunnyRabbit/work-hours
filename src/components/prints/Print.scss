@@ -1,0 +1,84 @@
+.print-document {
+  display: flex;
+  flex-direction: column;
+}
+
+.print-page {
+  position: relative;
+}
+
+@media print {
+  .print-page {
+    width: 100vw;
+    height: 100vh;
+
+    clear: both;
+    page-break-after: always;
+
+    &:last-of-type {
+      clear: none;
+      page-break-after: avoid;
+    }
+  }
+
+  html {
+    color: theme("colors.zinc.900") !important;
+    background: white !important;
+  }
+
+  body {
+    background: white !important;
+    overflow-y: auto;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  @page {
+    size: auto;
+    margin: 0mm;
+    background: white;
+    print-color-adjust: exact !important;
+    position: relative;
+  }
+
+  .page-break {
+    clear: both;
+    page-break-after: always;
+  }
+
+  .hide-print {
+    display: none;
+  }
+
+  footer {
+    width: 100%;
+    text-align: center;
+    position: fixed !important;
+    bottom: 0px !important;
+    border-top: 1px solid theme("colors.zinc.900");
+  }
+}
+
+@media not print {
+  .print-document {
+    gap: 16px;
+  }
+
+  .print-page {
+    margin: auto;
+    width: 210mm;
+    height: 297mm;
+    background: white;
+    color: theme("colors.zinc.900");
+
+    &[data-dynamic="true"] {
+      height: fit-content;
+    }
+  }
+
+  body.print {
+    overflow-y: auto !important;
+    margin: 16px 0px;
+    padding: 0px;
+  }
+}

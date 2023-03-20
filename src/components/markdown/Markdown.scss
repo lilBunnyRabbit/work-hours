@@ -11,7 +11,8 @@
   h2,
   h3,
   h4,
-  h5 {
+  h5,
+  h6 {
     font-weight: theme("fontWeight.medium") !important;
     line-height: 110%;
     border-bottom: 1px solid currentColor;
@@ -35,7 +36,7 @@
     font-size: theme("fontSize.xl") !important;
   }
 
-  h4 {
+  h5 {
     font-size: theme("fontSize.lg") !important;
   }
 
@@ -72,6 +73,88 @@
   }
 
   hr {
+    margin: 1rem 0;
+  }
+
+  a {
+    color: theme("colors.sky.500");
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.markdown-print {
+  & > :first-child {
+    margin-top: 0px;
+  }
+
+  * {
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: theme("fontWeight.medium") !important;
+    line-height: 110%;
+    border-bottom: 1px solid currentColor;
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-size: theme("fontSize.3xl") !important;
+  }
+
+  h2 {
+    font-size: theme("fontSize.2xl") !important;
+  }
+
+  h3 {
+    font-size: theme("fontSize.xl") !important;
+  }
+
+  h4 {
+    font-size: theme("fontSize.lg") !important;
+  }
+
+  blockquote {
+    padding: 8px 16px;
+    margin: 0.5rem 0;
+    color: theme("colors.zinc.500");
+    border-left: 4px solid theme("colors.zinc.500");
+  }
+
+  ol {
+    list-style-type: decimal;
+    padding-left: 1rem;
+    margin: 0.5rem 0;
+  }
+
+  ul {
+    list-style-type: disc;
+    padding-left: 1rem;
+    margin: 0.5rem 0;
+  }
+
+  p > code {
+    border: 1px solid theme("colors.zinc.500");
+    padding: 0 0.25rem;
+    color: theme("colors.amber.500");
+  }
+
+  pre > div {
+    border: 1px solid theme("colors.zinc.500") !important;
+    border-radius: 0px !important;
+  }
+
+  hr {
+    border-color: theme("colors.zinc.500");
     margin: 1rem 0;
   }
 

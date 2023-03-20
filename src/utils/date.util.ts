@@ -1,5 +1,7 @@
 // TODO: refactor file
 
+import { isUndefined } from "./type.util";
+
 export const months = [
   "January",
   "February",
@@ -122,4 +124,18 @@ export const hoursToTimeValue = (_hours: number): TimeValue => {
 
 export const dateToHours = (date: Date): number => {
   return date.getHours() + date.getMinutes() / 60;
+};
+
+export const formatDate = (date?: Date): string => {
+  return new Intl.DateTimeFormat("de-DE", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+};
+
+export const formatHours = (hours?: number): string => {
+  if (isUndefined(hours)) return "";
+
+  return `${hours.toFixed(2)} h`;
 };
