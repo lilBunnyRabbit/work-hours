@@ -1,22 +1,12 @@
-import { sendFileEvent } from "../../layouts/Toolbar";
-import { PickPartial } from "../type.util";
-import { isWHFile, IWHFile, IWHFileDay, IWHFileMetadata } from "./WHFileTypes";
+import { sendFileEvent } from "../layouts/Toolbar";
+import { PickPartial } from "../utils/type.util";
+import { isSupportedWHFile, isWHFile, WHFile, WHFileMetadata } from "./types/WHFileTypes";
 
+// https://developer.chrome.com/articles/file-system-access/
 const { showOpenFilePicker, showSaveFilePicker }: any = window;
 type FileHandle = any;
 
-// https://developer.chrome.com/articles/file-system-access/
-
-export const WHF_VERSION: IWHFile["__version"] = "whf_0.0.0";
-
-export const INITIAL_DAY: IWHFileDay = {
-  workLogs: [],
-  notes: "",
-};
-
-const INITIAL_DATA: PickPartial<IWHFile, "__version" | "__lastUpdated"> = {};
-
-export class WHFile {
+export class WHFileHandler {
   static TYPE = {
     description: "Work Hours Files",
     accept: {
@@ -24,7 +14,7 @@ export class WHFile {
     },
   };
 
-  private _metadata: IWHFileMetadata | null = null;
+  private _metadata: WHFileMetadata | null = null;
 
   get metadata() {
     return this._metadata;
@@ -32,7 +22,7 @@ export class WHFile {
 
   constructor(private fileHandle: FileHandle) {}
 
-  static getFileMetadata(file: File): IWHFileMetadata {
+  static getFileMetadata(file: File): WHFileMetadata {
     return {
       name: file.name,
       size: file.size,
@@ -42,7 +32,7 @@ export class WHFile {
     };
   }
 
-  static parse(content: string): IWHFile {
+  static parse(content: string): WHFile.default {
     try {
       return JSON.parse(content);
     } catch {
@@ -50,14 +40,15 @@ export class WHFile {
     }
   }
 
-  static validate(data: unknown): IWHFile {
-    if (!isWHFile(data)) throw new Error('File is not a valid "Work Hours File".');
+  static validate(data: unknown): WHFile.default {
+    if (!isWHFile<WHFile.default>(data)) throw new Error('File is not a valid "Work Hours File".');
+    if (!isSupportedWHFile(data)) throw new Error('"Work Hours File" version is not supported.');
     return data;
   }
 
-  static async open(): Promise<[WHFile, IWHFile]> {
+  static async open(): Promise<[WHFileHandler, WHFile.default]> {
     const [fileHandle] = await showOpenFilePicker({
-      types: [WHFile.TYPE],
+      types: [WHFileHandler.TYPE],
     });
 
     if (fileHandle.kind !== "file") throw new Error("Not a file.");
@@ -65,33 +56,37 @@ export class WHFile {
     const file: File = await fileHandle.getFile();
     const content: string = await file.text();
 
-    const data = WHFile.validate(WHFile.parse(content));
+    const data = WHFileHandler.validate(WHFileHandler.parse(content));
 
-    const whFile = new WHFile(fileHandle);
-    whFile._metadata = WHFile.getFileMetadata(file);
+    const whFile = new WHFileHandler(fileHandle);
+    whFile._metadata = WHFileHandler.getFileMetadata(file);
 
     return [whFile, data];
   }
 
-  static async create(): Promise<[WHFile, IWHFile]> {
+  static async create(): Promise<[WHFileHandler, WHFile.default]> {
     const fileHandle = await showSaveFilePicker({
-      types: [WHFile.TYPE],
+      types: [WHFileHandler.TYPE],
     });
 
     if (fileHandle.kind !== "file") throw new Error("Not a file.");
 
-    const whFile = new WHFile(fileHandle);
+    const whFile = new WHFileHandler(fileHandle);
     const file: File = await fileHandle.getFile();
-    whFile._metadata = WHFile.getFileMetadata(file);
-    const data = await whFile.write(INITIAL_DATA);
+    whFile._metadata = WHFileHandler.getFileMetadata(file);
+    const data = await whFile.write(WHFile.INITIAL_DATA);
 
     return [whFile, data];
   }
 
-  public async write(data: PickPartial<IWHFile, "__version" | "__lastUpdated">): Promise<IWHFile> {
+  public async write(data: PickPartial<WHFile.default, "__version" | "__lastUpdated">): Promise<WHFile.default> {
     if (!this.fileHandle) throw new Error("No selected file.");
 
-    const writeData: IWHFile = WHFile.validate({ ...data, __version: WHF_VERSION, __lastUpdated: Date.now() });
+    const writeData: WHFile.default = WHFileHandler.validate({
+      ...data,
+      __version: WHFile.VERSION,
+      __lastUpdated: Date.now(),
+    });
 
     sendFileEvent({ action: "writing", active: true });
     try {
@@ -118,11 +113,11 @@ export class WHFile {
     return file;
   }
 
-  public async getData(): Promise<IWHFile> {
+  public async getData(): Promise<WHFile.default> {
     const file = await this.getFile();
     const content = await file.text();
-    this._metadata = WHFile.getFileMetadata(file);
+    this._metadata = WHFileHandler.getFileMetadata(file);
 
-    return WHFile.validate(WHFile.parse(content));
+    return WHFileHandler.validate(WHFileHandler.parse(content));
   }
 }

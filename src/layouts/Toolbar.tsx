@@ -3,7 +3,7 @@ import { Icon } from "../components/icons";
 import { useAutoQueue } from "../hooks/useAutoQueue";
 import { classNames } from "../utils/class.util";
 import { createEventHandler, useEventHandler } from "../utils/event.util";
-import { useWHFile } from "../utils/wh-file/useWHFile";
+import { useWHFile } from "../wh-file/useWHFile";
 import "./Toolbar.scss";
 
 export interface NotificationEvent {

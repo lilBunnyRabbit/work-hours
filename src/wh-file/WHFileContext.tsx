@@ -1,10 +1,10 @@
 import React from "react";
-import { WHFile } from "./WHFile";
-import { IWHFile, IWHFileMetadata } from "./WHFileTypes";
+import { WHFileMetadata } from "./types/WHFileTypes";
+import { WHFileHandler } from "./WHFileHandler";
 
 export interface WHFileContextProps {
-  whFile: WHFile | null;
-  metadata: IWHFileMetadata | null;
+  handler: WHFileHandler | null;
+  metadata: WHFileMetadata | null;
   open: () => Promise<void>;
   create: () => Promise<void>;
 }

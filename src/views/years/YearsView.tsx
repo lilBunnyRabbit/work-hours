@@ -3,7 +3,7 @@ import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
 import { useKeyDown } from "../../hooks/useKeyDown";
-import { useYearsInfoQuery } from "../../utils/wh-file/WHFileQueries";
+import { useYearsInfoQuery } from "../../wh-file/WHFileQueries";
 
 export const YearsView: React.FC = () => {
   const { data: yearsInfo, error } = useYearsInfoQuery();

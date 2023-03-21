@@ -4,7 +4,7 @@ import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
 import { generateDays } from "../../utils/date.util";
-import { useMonthQuery } from "../../utils/wh-file/WHFileQueries";
+import { useMonthQuery } from "../../wh-file/WHFileQueries";
 
 export const DaysView: React.FC = () => {
   const { year, month } = useParams();

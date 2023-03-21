@@ -1,11 +1,11 @@
 import React from "react";
 import { Navigate, Outlet, useLocation, useMatch } from "react-router-dom";
-import { useWHFile } from "../utils/wh-file/useWHFile";
+import { useWHFile } from "../wh-file/useWHFile";
 import { Header } from "./Header";
 import { Toolbar } from "./Toolbar";
 
 export const AppLayout: React.FC = () => {
-  const { whFile } = useWHFile();
+  const { handler: whFile } = useWHFile();
   const location = useLocation();
   const isIndexView = useMatch({ path: "/", end: true });
   const isPrintView = useMatch({ path: "/print", end: false });

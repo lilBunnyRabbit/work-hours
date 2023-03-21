@@ -1,8 +1,7 @@
 import React from "react";
-import { isFunction, isString } from "../type.util";
+import { isFunction, isString } from "../utils/type.util";
+import { WHFile } from "./types/WHFileTypes";
 import { useWHFile } from "./useWHFile";
-import { INITIAL_DAY } from "./WHFile";
-import { IWHFile, IWHFileDay, IWHFileMonth, IWHFileYear, IWHFileYears } from "./WHFileTypes";
 
 interface YearInfo {
   daysCount: number;
@@ -10,12 +9,12 @@ interface YearInfo {
 
 export const useYears = () => {
   const context = useWHFile();
-  if (!context.whFile) {
+  if (!context.handler) {
     throw new Error('No open "Work Hours File".');
   }
 
-  const handleGet = React.useCallback(async (): Promise<IWHFileYears> => {
-    const data = await context.whFile!.getData();
+  const handleGet = React.useCallback(async (): Promise<WHFile.Years> => {
+    const data = await context.handler!.getData();
     return data.years || {};
   }, [context]);
 
@@ -47,7 +46,7 @@ interface MonthInfo {
 
 export const useYear = (iYear: string | number) => {
   const context = useWHFile();
-  if (!context.whFile) {
+  if (!context.handler) {
     throw new Error('No open "Work Hours File".');
   }
 
@@ -57,8 +56,8 @@ export const useYear = (iYear: string | number) => {
     };
   }, [iYear]);
 
-  const handleGet = React.useCallback(async (): Promise<IWHFileYear> => {
-    const data = await context.whFile!.getData();
+  const handleGet = React.useCallback(async (): Promise<WHFile.Year> => {
+    const data = await context.handler!.getData();
     return data.years?.[year] || {};
   }, [context, year]);
 
@@ -84,7 +83,7 @@ export const useYear = (iYear: string | number) => {
 
 export const useMonth = (iYear: string | number, iMonth: string | number) => {
   const context = useWHFile();
-  if (!context.whFile) {
+  if (!context.handler) {
     throw new Error('No open "Work Hours File".');
   }
 
@@ -95,8 +94,8 @@ export const useMonth = (iYear: string | number, iMonth: string | number) => {
     };
   }, [iYear, iMonth]);
 
-  const handleGet = React.useCallback(async (): Promise<IWHFileMonth> => {
-    const data = await context.whFile!.getData();
+  const handleGet = React.useCallback(async (): Promise<WHFile.Month> => {
+    const data = await context.handler!.getData();
     return data.years?.[year]?.[month] || {};
   }, [context, year, month]);
 
@@ -106,13 +105,13 @@ export const useMonth = (iYear: string | number, iMonth: string | number) => {
 };
 
 export interface UpdateDayFunction {
-  (day: IWHFileDay): Promise<IWHFileDay>;
-  (callback: (day: IWHFileDay) => Promise<IWHFileDay> | IWHFileDay): Promise<IWHFileDay>;
+  (day: WHFile.Day): Promise<WHFile.Day>;
+  (callback: (day: WHFile.Day) => Promise<WHFile.Day> | WHFile.Day): Promise<WHFile.Day>;
 }
 
 export const useDay = (iYear: string | number, iMonth: string | number, iDay: string | number) => {
   const context = useWHFile();
-  if (!context.whFile) {
+  if (!context.handler) {
     throw new Error('No open "Work Hours File".');
   }
 
@@ -124,11 +123,11 @@ export const useDay = (iYear: string | number, iMonth: string | number, iDay: st
     };
   }, [iYear, iMonth, iDay]);
 
-  const handleRemove = React.useCallback(async (): Promise<IWHFile> => {
-    const data = await context.whFile!.getData();
+  const handleRemove = React.useCallback(async (): Promise<WHFile.default> => {
+    const data = await context.handler!.getData();
     if (data?.years?.[year]?.[month]?.[day]) {
       delete data.years![year]![month]![day];
-      return await context.whFile!.write(data);
+      return await context.handler!.write(data);
     }
 
     return data;
@@ -136,27 +135,27 @@ export const useDay = (iYear: string | number, iMonth: string | number, iDay: st
 
   const handleUpdate: UpdateDayFunction = React.useCallback(
     async (arg) => {
-      const data = await context.whFile!.getData();
+      const data = await context.handler!.getData();
       if (!data.years) data.years = {};
       if (!data.years[year]) data.years[year] = {};
       if (!data.years[year]![month]) data.years[year]![month] = {};
 
-      let currentDay = data.years[year]![month]![day] || INITIAL_DAY;
-      let newDay: IWHFileDay;
+      let currentDay = data.years[year]![month]![day] || WHFile.INITIAL_DAY;
+      let newDay: WHFile.Day;
 
       if (isFunction(arg)) newDay = await Promise.resolve(arg(currentDay));
       else newDay = arg;
 
       data.years[year]![month]![day] = newDay;
 
-      const newData = await context.whFile!.write(data);
-      return newData?.years?.[year]?.[month]?.[day] || INITIAL_DAY;
+      const newData = await context.handler!.write(data);
+      return newData?.years?.[year]?.[month]?.[day] || WHFile.INITIAL_DAY;
     },
     [context, year, month, day]
   );
 
-  const handleGet = React.useCallback(async (): Promise<IWHFileDay> => {
-    const data = await context.whFile!.getData();
+  const handleGet = React.useCallback(async (): Promise<WHFile.Day> => {
+    const data = await context.handler!.getData();
     const currentDay = data?.years?.[year]?.[month]?.[day];
     if (!currentDay) {
       return await handleUpdate((day) => day);

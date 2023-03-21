@@ -6,8 +6,8 @@ import { MarkdownEditor } from "../../../components/editors/markdown/MarkdownEdi
 import { Icon } from "../../../components/icons";
 import { showNotification } from "../../../layouts/Toolbar";
 import { dateToTimeValue, hoursToTimeValue, padTime, TimeValue, timeValueToHours } from "../../../utils/date.util";
-import { totalWorkLogTime } from "../../../utils/wh-file/WHFile.util";
-import { useDayQuery } from "../../../utils/wh-file/WHFileQueries";
+import { totalWorkLogTime } from "../../../wh-file/WHFile.util";
+import { useDayQuery } from "../../../wh-file/WHFileQueries";
 import "./DayReport.scss";
 import { DayColumn } from "./DayView";
 

@@ -1,10 +1,10 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { PaperButton } from "../components/buttons/PaperButton";
-import { useWHFile } from "../utils/wh-file/useWHFile";
+import { useWHFile } from "../wh-file/useWHFile";
 
 export const IndexView: React.FC = () => {
-  const { open, create, whFile } = useWHFile();
+  const { open, create, handler: whFile } = useWHFile();
   const { state } = useLocation();
 
   if (whFile) {

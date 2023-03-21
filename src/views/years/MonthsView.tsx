@@ -5,7 +5,7 @@ import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
 import { months } from "../../utils/date.util";
-import { useYear } from "../../utils/wh-file/WHFileHooks";
+import { useYear } from "../../wh-file/WHFileHooks";
 
 export const MonthsView: React.FC = () => {
   const { year } = useParams();

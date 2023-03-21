@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../../../components/Loader";
 import { showNotification } from "../../../layouts/Toolbar";
 import { classNames } from "../../../utils/class.util";
-import { useDay } from "../../../utils/wh-file/WHFileHooks";
+import { useDay } from "../../../wh-file/WHFileHooks";
 
 export const DayDeleteView: React.FC = () => {
   const params = useParams();

@@ -6,9 +6,9 @@ import { PaperButton } from "../../../components/buttons/PaperButton";
 import { LogInput } from "../../../components/inputs/log/LogInput";
 import { showNotification } from "../../../layouts/Toolbar";
 import { formatTime } from "../../../utils/date.util";
-import { totalWorkLogTime } from "../../../utils/wh-file/WHFile.util";
-import { useDayQuery } from "../../../utils/wh-file/WHFileQueries";
-import { IWHFileDay } from "../../../utils/wh-file/WHFileTypes";
+import { totalWorkLogTime } from "../../../wh-file/WHFile.util";
+import { useDayQuery } from "../../../wh-file/WHFileQueries";
+import { WHFileDay } from "../../../wh-file/types/WHFileTypes";
 import { DayColumn } from "./DayView";
 
 export const DayWorkLogs: React.FC = () => {
@@ -65,8 +65,8 @@ export const DayWorkLogs: React.FC = () => {
 };
 
 interface WorkLogProps {
-  workLog: IWHFileDay["workLogs"][number];
-  updateDay: UseMutateFunction<IWHFileDay, any, (day: IWHFileDay) => IWHFileDay | Promise<IWHFileDay>, unknown>;
+  workLog: WHFileDay["workLogs"][number];
+  updateDay: UseMutateFunction<WHFileDay, any, (day: WHFileDay) => WHFileDay | Promise<WHFileDay>, unknown>;
 }
 
 const WorkLog: React.FC<WorkLogProps> = ({ workLog, updateDay }) => {

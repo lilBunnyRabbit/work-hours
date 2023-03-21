@@ -1,6 +1,6 @@
 import React from "react";
-import { showNotification } from "../../layouts/Toolbar";
-import { WHFile } from "./WHFile";
+import { showNotification } from "../layouts/Toolbar";
+import { WHFileHandler } from "./WHFileHandler";
 import { WHFileContext, WHFileContextProps } from "./WHFileContext";
 
 export interface WHFileProviderProps {
@@ -8,12 +8,12 @@ export interface WHFileProviderProps {
 }
 
 export const WHFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
-  const [whFile, setWHFile] = React.useState<WHFileContextProps["whFile"]>(null);
+  const [whFile, setWHFile] = React.useState<WHFileContextProps["handler"]>(null);
   const [metadata, setMetadata] = React.useState<WHFileContextProps["metadata"]>(null);
 
   const handleOpen: WHFileContextProps["open"] = React.useCallback(async () => {
     try {
-      const [whFile] = await WHFile.open();
+      const [whFile] = await WHFileHandler.open();
       setWHFile(whFile);
       setMetadata(whFile.metadata);
     } catch (error: any) {
@@ -28,7 +28,7 @@ export const WHFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
 
   const handleCreate: WHFileContextProps["create"] = React.useCallback(async () => {
     try {
-      const [whFile] = await WHFile.create();
+      const [whFile] = await WHFileHandler.create();
       setWHFile(whFile);
       setMetadata(whFile.metadata);
     } catch (error: any) {
@@ -42,6 +42,6 @@ export const WHFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <WHFileContext.Provider value={{ whFile, metadata, open: handleOpen, create: handleCreate }} children={children} />
+    <WHFileContext.Provider value={{ handler: whFile, metadata, open: handleOpen, create: handleCreate }} children={children} />
   );
 };

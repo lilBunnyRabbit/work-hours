@@ -5,7 +5,7 @@ import { IconButton } from "../../../components/buttons/IconButton";
 import { MarkdownEditor } from "../../../components/editors/markdown/MarkdownEditor";
 import { Icon } from "../../../components/icons";
 import { showNotification } from "../../../layouts/Toolbar";
-import { useDayQuery } from "../../../utils/wh-file/WHFileQueries";
+import { useDayQuery } from "../../../wh-file/WHFileQueries";
 import "./DayNotes.scss";
 import { DayColumn } from "./DayView";
 

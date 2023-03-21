@@ -1,7 +1,7 @@
 import React from "react";
 import { classNames } from "../../../utils/class.util";
 import { daysInMonth, formatDate, formatHours, months } from "../../../utils/date.util";
-import { useMonthQuery } from "../../../utils/wh-file/WHFileQueries";
+import { useMonthQuery } from "../../../wh-file/WHFileQueries";
 import { Markdown } from "../../markdown/Markdown";
 import { Print } from "../Print";
 import "./PrintMonth.scss";
