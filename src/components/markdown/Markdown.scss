@@ -3,6 +3,10 @@
     margin-top: 0px;
   }
 
+  & > :last-child {
+    margin-bottom: 0px;
+  }
+
   * {
     line-height: 1.5;
   }
@@ -88,6 +92,10 @@
 .markdown-print {
   & > :first-child {
     margin-top: 0px;
+  }
+
+  & > :last-child {
+    margin-bottom: 0px;
   }
 
   * {
