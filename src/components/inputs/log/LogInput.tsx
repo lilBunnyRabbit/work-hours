@@ -2,7 +2,7 @@ import React from "react";
 import { useStopWatch, UseStopWatchProps } from "../../../hooks/useStopwatch";
 import { classNames } from "../../../utils/class.util";
 import { dateToTimeValue, formatTime, TimeValue, timeValueToDate } from "../../../utils/date.util";
-import { WHFileDay } from "../../../wh-file/types/WHFileTypes";
+import { WHFile } from "../../../wh-file/types/WHFileTypes";
 import { IconButton } from "../../buttons/IconButton";
 import { PaperButton } from "../../buttons/PaperButton";
 import { MarkdownEditor } from "../../editors/markdown/MarkdownEditor";
@@ -10,9 +10,9 @@ import { Icon } from "../../icons";
 import "./LogInput.scss";
 
 interface LogInputProps {
-  workLog: WHFileDay["workLogs"][number];
+  workLog: WHFile.Day["workLogs"][number];
   onDelete?: () => void;
-  onChange?: (workLog: WHFileDay["workLogs"][number]) => void;
+  onChange?: (workLog: WHFile.Day["workLogs"][number]) => void;
 }
 
 export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange }) => {

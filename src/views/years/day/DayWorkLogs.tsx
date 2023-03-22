@@ -8,7 +8,7 @@ import { showNotification } from "../../../layouts/Toolbar";
 import { formatTime } from "../../../utils/date.util";
 import { totalWorkLogTime } from "../../../wh-file/WHFile.util";
 import { useDayQuery } from "../../../wh-file/WHFileQueries";
-import { WHFileDay } from "../../../wh-file/types/WHFileTypes";
+import { WHFile } from "../../../wh-file/types/WHFileTypes";
 import { DayColumn } from "./DayView";
 
 export const DayWorkLogs: React.FC = () => {
@@ -65,8 +65,8 @@ export const DayWorkLogs: React.FC = () => {
 };
 
 interface WorkLogProps {
-  workLog: WHFileDay["workLogs"][number];
-  updateDay: UseMutateFunction<WHFileDay, any, (day: WHFileDay) => WHFileDay | Promise<WHFileDay>, unknown>;
+  workLog: WHFile.Day["workLogs"][number];
+  updateDay: UseMutateFunction<WHFile.Day, any, (day: WHFile.Day) => WHFile.Day | Promise<WHFile.Day>, unknown>;
 }
 
 const WorkLog: React.FC<WorkLogProps> = ({ workLog, updateDay }) => {
