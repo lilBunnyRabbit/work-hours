@@ -1,6 +1,6 @@
 import React from "react";
 import { classNames } from "../../../utils/class.util";
-import { daysInMonth, formatDate, formatHours, months } from "../../../utils/date.util";
+import { daysInMonth, formatDate, formatHours, formatTimeShort, months } from "../../../utils/date.util";
 import { useMonthQuery } from "../../../wh-file/WHFileQueries";
 import { Markdown } from "../../markdown/Markdown";
 import { Print } from "../Print";
@@ -51,11 +51,15 @@ export const PrintMonth: React.FC<PrintMonthProps> = ({ year, month }) => {
 
   const totalHours = React.useMemo(
     () =>
-      Object.keys(monthData || {})
-        .reduce((total, current) => {
-          return total + (monthData?.[current as keyof typeof monthData]?.report?.hours || 0);
-        }, 0),
-    []
+      Object.keys(monthData || {}).reduce((total, current) => {
+        return total + (monthData?.[current as keyof typeof monthData]?.report?.hours || 0);
+      }, 0),
+    [monthData]
+  );
+
+  const monthsWithNotes = React.useMemo(
+    () => Object.keys(monthData || {}).filter((day) => monthData![day as keyof typeof monthData]!.report?.notes),
+    [monthData]
   );
 
   return (
@@ -91,8 +95,8 @@ export const PrintMonth: React.FC<PrintMonthProps> = ({ year, month }) => {
               return (
                 <tr className={classNames(day.isWeekend && "weekend")} key={`tr-${i}`}>
                   <td>{formatDate(day.date)}</td>
-                  <td>{day.timeIn}</td>
-                  <td>{day.timeOut}</td>
+                  <td>{formatTimeShort(day.timeIn)}</td>
+                  <td>{formatTimeShort(day.timeOut)}</td>
                   <td>{formatHours(day.hours)}</td>
                 </tr>
               );
@@ -106,29 +110,26 @@ export const PrintMonth: React.FC<PrintMonthProps> = ({ year, month }) => {
 
         <h3 className="flex justify-between gap-4 mx-8 my-8">
           <span>Total Notes:</span>
-          <span>{Object.keys(monthData || {}).length}</span>
+          <span>{monthsWithNotes.length}</span>
         </h3>
 
         <div className="flex flex-col">
-          {monthData &&
-            Object.keys(monthData)
-              .filter((day) => monthData[day as keyof typeof monthData]!.report?.notes)
-              .map((day) => {
-                const dayData = monthData[day as keyof typeof monthData]!;
-                const dayInfo = days[day as any];
+          {monthsWithNotes.map((day) => {
+            const dayData = monthData![day as keyof typeof monthData]!;
+            const dayInfo = days[day as any];
 
-                return (
-                  <div className="flex flex-col bg-zinc-100">
-                    <div className="flex flex-row justify-between border-y border-y-zinc-700 px-8 py-2 bg-zinc-700 text-zinc-100">
-                      <div>{formatDate(dayInfo.date)}</div>
-                      <div>{formatHours(dayData.report?.hours)}</div>
-                    </div>
-                    <div className="px-8 py-4">
-                      <Markdown print theme="light" children={dayData.report?.notes || ""} />
-                    </div>
-                  </div>
-                );
-              })}
+            return (
+              <div className="flex flex-col bg-zinc-100">
+                <div className="flex flex-row justify-between border-y border-y-zinc-700 px-8 py-2 bg-zinc-700 text-zinc-100">
+                  <div>{formatDate(dayInfo.date)}</div>
+                  <div>{formatHours(dayData.report?.hours)}</div>
+                </div>
+                <div className="px-8 py-4">
+                  <Markdown print theme="light" children={dayData.report?.notes || ""} />
+                </div>
+              </div>
+            );
+          })}
         </div>
       </Print.Page>
     </Print.Document>

@@ -139,3 +139,9 @@ export const formatHours = (hours?: number): string => {
 
   return `${hours.toFixed(2)} h`;
 };
+
+export const formatTimeShort = (timeValue?: string): string => {
+  if (!timeValue) return "";
+  const [hours, minutes] = timeValue.split(":");
+  return `${hours}:${minutes}`;
+};
