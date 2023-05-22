@@ -47,4 +47,9 @@
     background: theme("colors.zinc.900") !important;
     pointer-events: none;
   }
+
+  &[data-highlight="true"] {
+    border-style: dashed !important;
+    border-width: 2px;
+  }
 }

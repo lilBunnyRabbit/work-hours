@@ -4,6 +4,7 @@ import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
 import { useKeyDown } from "../../hooks/useKeyDown";
 import { useYearsInfoQuery } from "../../wh-file/WHFileQueries";
+import { isCurrentYear } from "../../utils/date.util";
 
 export const YearsView: React.FC = () => {
   const { data: yearsInfo, error } = useYearsInfoQuery();
@@ -31,6 +32,8 @@ export const YearsView: React.FC = () => {
     }
   });
 
+  const isToday = React.useMemo(() => isCurrentYear(), []);
+
   React.useEffect(() => {
     console.log("YEARS", yearsInfo);
   }, [yearsInfo]);
@@ -43,7 +46,13 @@ export const YearsView: React.FC = () => {
         <CardContainer
           columns={3}
           children={years.map((year) => (
-            <CardLink key={year} to={`${year}/months`} data-empty={!yearsInfo[year]?.daysCount} children={year} />
+            <CardLink
+              key={year}
+              to={`${year}/months`}
+              data-empty={!yearsInfo[year]?.daysCount}
+              data-highlight={isToday(year)}
+              children={year}
+            />
           ))}
         />
       )}

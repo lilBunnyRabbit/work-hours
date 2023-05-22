@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
-import { months } from "../../utils/date.util";
+import { isCurrentMonth, months } from "../../utils/date.util";
 import { useYear } from "../../wh-file/WHFileHooks";
 
 export const MonthsView: React.FC = () => {
@@ -12,6 +12,9 @@ export const MonthsView: React.FC = () => {
 
   const yearHandler = useYear(year!);
   const { data: yearInfo, error } = useQuery(["year-info", year], yearHandler.getInfo);
+
+  const yearNumber = React.useMemo(() => Number.parseInt(year!), [year]);
+  const isToday = React.useMemo(() => isCurrentMonth(), []);
 
   React.useEffect(() => {
     console.log("MONTHS", yearInfo);
@@ -25,7 +28,13 @@ export const MonthsView: React.FC = () => {
         <CardContainer
           columns={4}
           children={months.map((month, i) => (
-            <CardLink key={month} to={`${i}/days`} data-empty={!yearInfo[i]?.daysCount} children={month} />
+            <CardLink
+              key={month}
+              to={`${i}/days`}
+              data-empty={!yearInfo[i]?.daysCount}
+              data-highlight={isToday(yearNumber, i)}
+              children={month}
+            />
           ))}
         />
       )}

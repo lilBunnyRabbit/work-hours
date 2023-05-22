@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
-import { generateDays } from "../../utils/date.util";
+import { generateDays, isCurrentDay } from "../../utils/date.util";
 import { useMonthQuery } from "../../wh-file/WHFileQueries";
 
 export const DaysView: React.FC = () => {
@@ -12,6 +12,10 @@ export const DaysView: React.FC = () => {
   const { data: monthData, error } = useMonthQuery(year!, month!);
 
   const days = React.useMemo(() => generateDays(Number(year), Number(month)), [month, year]);
+
+  const yearNumber = React.useMemo(() => Number.parseInt(year!), [year]);
+  const monthNumber = React.useMemo(() => Number.parseInt(month!), [month]);
+  const isToday = React.useMemo(() => isCurrentDay(), []);
 
   React.useEffect(() => {
     console.log("DAYS", monthData);
@@ -31,6 +35,7 @@ export const DaysView: React.FC = () => {
               data-disabled={!active}
               data-empty={!(day in monthData)}
               data-full={!!monthData[day]?.report}
+              data-highlight={isToday(yearNumber, monthNumber, day)}
               children={day + 1}
             />
           ))}

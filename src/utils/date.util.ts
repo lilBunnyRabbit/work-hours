@@ -145,3 +145,30 @@ export const formatTimeShort = (timeValue?: string): string => {
   const [hours, minutes] = timeValue.split(":");
   return `${hours}:${minutes}`;
 };
+
+export const isCurrentYear = () => {
+  const currentYear = new Date().getFullYear();
+
+  return (year: number) => currentYear === year;
+};
+
+export const isCurrentMonth = () => {
+  const date = new Date();
+  const currentYear = date.getFullYear();
+  const currentMonth = date.getMonth();
+
+  return (year: number, month: number) => {
+    return year === currentYear && month === currentMonth;
+  };
+};
+
+export const isCurrentDay = () => {
+  const date = new Date();
+  const currentYear = date.getFullYear();
+  const currentMonth = date.getMonth();
+  const currentDay = date.getDate() - 1;
+
+  return (year: number, month: number, day: number) => {
+    return year === currentYear && month === currentMonth && day === currentDay;
+  };
+};
