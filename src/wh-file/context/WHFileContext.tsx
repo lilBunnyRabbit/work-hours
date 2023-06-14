@@ -1,10 +1,16 @@
 import React from "react";
-import { showNotification } from "../../layouts/Toolbar";
+import { sendFileEvent, showNotification } from "../../layouts/Toolbar";
 import { WHFileHandler } from "../WHFileHandler";
 import whFileService from "../services/whFile.service";
+import { WHFile } from "../WHFile";
 
 export interface WHFileContextProps {
-  handler: WHFileHandler | null;
+  manager: {
+    handler: WHFileHandler<WHFile.default>;
+    lastSynch: number;
+    lastUpdate: number;
+    update: (data: WHFile.default) => Promise<void>;
+  } | null;
   open: () => Promise<void>;
   create: () => Promise<void>;
 }
@@ -16,12 +22,21 @@ export interface WHFileProviderProps {
 }
 
 export const WHFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
-  const [handler, setHandler] = React.useState<WHFileContextProps["handler"]>(null);
+  const [manager, setManager] = React.useState<Omit<NonNullable<WHFileContextProps["manager"]>, "update"> | null>(null);
 
-  const handleOpen: WHFileContextProps["open"] = React.useCallback(async () => {
+  const onHandlerCreate = React.useCallback((handler: WHFileHandler<WHFile.default>) => {
+    const currentTimestamp = Date.now();
+    setManager({
+      handler,
+      lastSynch: currentTimestamp,
+      lastUpdate: currentTimestamp,
+    });
+  }, []);
+
+  const open: WHFileContextProps["open"] = React.useCallback(async () => {
     try {
       const handler = await whFileService.open();
-      setHandler(handler);
+      onHandlerCreate(handler);
     } catch (error: any) {
       console.error(error);
       showNotification({
@@ -30,12 +45,12 @@ export const WHFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
         description: error?.message,
       });
     }
-  }, []);
+  }, [onHandlerCreate]);
 
-  const handleCreate: WHFileContextProps["create"] = React.useCallback(async () => {
+  const create: WHFileContextProps["create"] = React.useCallback(async () => {
     try {
       const handler = await whFileService.create();
-      setHandler(handler);
+      onHandlerCreate(handler);
     } catch (error: any) {
       console.error(error);
       showNotification({
@@ -44,7 +59,61 @@ export const WHFileProvider: React.FC<WHFileProviderProps> = ({ children }) => {
         description: error?.message,
       });
     }
-  }, []);
+  }, [onHandlerCreate]);
 
-  return <WHFileContext.Provider value={{ handler, open: handleOpen, create: handleCreate }} children={children} />;
+  const update: NonNullable<WHFileContextProps["manager"]>["update"] = React.useCallback(
+    async (data) => {
+      if (manager === null) throw new Error("No initialized manager.");
+
+      try {
+        const updated = await whFileService.write.observe({
+          writing: (active) => sendFileEvent({ action: "writing", active }),
+        })(manager.handler.fileHandle, data);
+
+        manager.handler.data = updated as WHFile.default;
+
+        const timestamp = Date.now();
+        setManager((manager) => {
+          if (manager === null) return manager;
+          return {
+            ...manager,
+            lastSynch: timestamp,
+            lastUpdate: timestamp,
+          };
+        });
+      } catch (error) {
+        showNotification({
+          type: "error",
+          title: "Failed to synch file",
+          description: (error as any)?.message,
+        });
+
+        manager.handler.data = data as WHFile.default;
+
+        const timestamp = Date.now();
+        setManager((manager) => {
+          if (manager === null) return manager;
+          return {
+            ...manager,
+            lastUpdate: timestamp,
+          };
+        });
+      }
+    },
+    [manager]
+  );
+
+  const extendedManager = React.useMemo(() => {
+    if (manager === null) return manager;
+    return {
+      ...manager,
+      update: update,
+    };
+  }, [manager, update]);
+
+  React.useEffect(() => {
+    console.log("WHFileContext.manager", manager);
+  }, [manager]);
+
+  return <WHFileContext.Provider value={{ manager: extendedManager, open, create }} children={children} />;
 };

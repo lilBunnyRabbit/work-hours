@@ -4,7 +4,7 @@ import { PaperButton } from "../components/buttons/PaperButton";
 import { useWHFile } from "../wh-file/context/WHFileHooks";
 
 export const IndexView: React.FC = () => {
-  const { open, create, handler } = useWHFile();
+  const { open, create, manager: handler } = useWHFile();
   const { state } = useLocation();
 
   if (handler) {

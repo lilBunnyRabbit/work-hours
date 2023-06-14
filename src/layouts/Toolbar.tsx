@@ -24,7 +24,7 @@ export const fileEventHandler = createEventHandler<FileEvent>("file");
 export const sendFileEvent = fileEventHandler.dispatch;
 
 export const Toolbar: React.FC = () => {
-  const { handler } = useWHFile();
+  const { manager } = useWHFile();
 
   const [writingFile, setWritingFile] = React.useState(false);
 
@@ -47,8 +47,20 @@ export const Toolbar: React.FC = () => {
 
   return (
     <div className="toolbar flex w-screen h-[26px] px-2 items-center justify-between text-xs leading-[100%] text-zinc-400 font-light bg-[#101012] border-t border-t-zinc-700">
-      <div>
-        {handler && <ToolbarItem icon={writingFile ? Icon.FileText : Icon.File} children={handler.metadata.name} />}
+      <div className="flex flex-row items-end gap-4">
+        {manager && (
+          <>
+            <ToolbarItem icon={writingFile ? Icon.FileText : Icon.File} children={manager.handler.metadata.name} />
+            {manager.lastSynch !== manager.lastUpdate && (
+              <ToolbarItem
+                className="toolbar-notification"
+                data-type="error"
+                icon={Icon.Alert}
+                children="Not synched!"
+              />
+            )}
+          </>
+        )}
       </div>
 
       {notification && (

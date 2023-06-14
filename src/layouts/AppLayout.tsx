@@ -5,7 +5,7 @@ import { Header } from "./Header";
 import { Toolbar } from "./Toolbar";
 
 export const AppLayout: React.FC = () => {
-  const { handler: whFile } = useWHFile();
+  const { manager: whFile } = useWHFile();
   const location = useLocation();
   const isIndexView = useMatch({ path: "/", end: true });
   const isPrintView = useMatch({ path: "/print", end: false });

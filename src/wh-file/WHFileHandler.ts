@@ -1,4 +1,4 @@
-import { sendFileEvent } from "../layouts/Toolbar";
+import { sendFileEvent, showNotification } from "../layouts/Toolbar";
 import { WHFile, WHFileBase, WHFileMetadata } from "./WHFile";
 import { SupportedVersions } from "./services/migration.service";
 import whFileService, { FileHandle } from "./services/whFile.service";
@@ -12,11 +12,7 @@ export class WHFileHandler<TFile extends WHFileBase<SupportedVersions> = WHFile.
     return this._data;
   }
 
-  public async update(data: TFile) {
-    const updated = await whFileService.write.observe({
-      writing: (active) => sendFileEvent({ action: "writing", active }),
-    })(this.fileHandle, data);
-
-    this._data = updated as TFile;
+  set data(data: TFile) {
+    this._data = data;
   }
 }

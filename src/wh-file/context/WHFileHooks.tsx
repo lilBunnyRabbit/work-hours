@@ -18,14 +18,14 @@ interface YearInfo {
 
 export const useYears = () => {
   const context = useWHFile();
-  if (!context.handler) {
+  if (!context.manager) {
     throw new Error('No open "Work Hours File".');
   }
 
-  const [years, setYears] = React.useState(() => context.handler!.data.years || {});
+  const [years, setYears] = React.useState(() => context.manager!.handler.data.years || {});
 
   React.useEffect(() => {
-    setYears(context.handler!.data.years || {});
+    setYears(context.manager!.handler.data.years || {});
   }, [context]);
 
   const info = React.useMemo(() => {
@@ -51,7 +51,7 @@ interface MonthInfo {
 
 export const useYear = (iYear: string | number) => {
   const context = useWHFile();
-  if (!context.handler) {
+  if (!context.manager) {
     throw new Error('No open "Work Hours File".');
   }
 
@@ -61,10 +61,10 @@ export const useYear = (iYear: string | number) => {
     };
   }, [iYear]);
 
-  const [year, setYear] = React.useState(() => context.handler!.data.years?.[keys.year] || {});
+  const [year, setYear] = React.useState(() => context.manager!.handler.data.years?.[keys.year] || {});
 
   React.useEffect(() => {
-    setYear(context.handler!.data.years?.[keys.year] || {});
+    setYear(context.manager!.handler.data.years?.[keys.year] || {});
   }, [context, keys]);
 
   const info = React.useMemo(() => {
@@ -84,7 +84,7 @@ export const useYear = (iYear: string | number) => {
 
 export const useMonth = (iYear: string | number, iMonth: string | number) => {
   const context = useWHFile();
-  if (!context.handler) {
+  if (!context.manager) {
     throw new Error('No open "Work Hours File".');
   }
 
@@ -95,10 +95,10 @@ export const useMonth = (iYear: string | number, iMonth: string | number) => {
     };
   }, [iYear, iMonth]);
 
-  const [month, setMonth] = React.useState(() => context.handler!.data.years?.[keys.year]?.[keys.month] || {});
+  const [month, setMonth] = React.useState(() => context.manager!.handler.data.years?.[keys.year]?.[keys.month] || {});
 
   React.useEffect(() => {
-    setMonth(context.handler!.data.years?.[keys.year]?.[keys.month] || {});
+    setMonth(context.manager!.handler.data.years?.[keys.year]?.[keys.month] || {});
   }, [context, keys]);
 
   return { keys, month };
@@ -111,7 +111,7 @@ export interface UpdateDayFunction {
 
 export const useDay = (iYear: string | number, iMonth: string | number, iDay: string | number) => {
   const context = useWHFile();
-  if (!context.handler) {
+  if (!context.manager) {
     throw new Error('No open "Work Hours File".');
   }
 
@@ -123,21 +123,23 @@ export const useDay = (iYear: string | number, iMonth: string | number, iDay: st
     };
   }, [iYear, iMonth, iDay]);
 
-  const [day, setDay] = React.useState(() => context.handler!.data.years?.[keys.year]?.[keys.month]?.[keys.day]);
+  const [day, setDay] = React.useState(
+    () => context.manager!.handler.data.years?.[keys.year]?.[keys.month]?.[keys.day]
+  );
 
   React.useEffect(() => {
-    setDay(context.handler!.data.years?.[keys.year]?.[keys.month]?.[keys.day]);
+    setDay(context.manager!.handler.data.years?.[keys.year]?.[keys.month]?.[keys.day]);
   }, [context, keys]);
 
-  // const handleRemove = React.useCallback(async (): Promise<WHFile.default> => {
-  //   const data = await context.handler!.getData();
-  //   if (data?.years?.[year]?.[month]?.[day]) {
-  //     delete data.years![year]![month]![day];
-  //     return await context.handler!.write(data);
-  //   }
+  const handleDelete = React.useCallback(async () => {
+    const data = {...context.manager?.handler.data};
+    if (data?.years?.[keys.year]?.[keys.month]?.[keys.day]) {
+      delete data.years![keys.year]![keys.month]![keys.day];
+      return await context.manager!.update(data as WHFile.default);
+    }
 
-  //   return data;
-  // }, [context, year, month, day]);
+    return data;
+  }, [context, keys]);
 
   // const handleUpdate: UpdateDayFunction = React.useCallback(
   //   async (arg) => {
@@ -169,5 +171,5 @@ export const useDay = (iYear: string | number, iMonth: string | number, iDay: st
   //   return currentDay;
   // }, [context, year, month, day, handleUpdate]);
 
-  return { keys, day };
+  return { keys, day, delete: handleDelete };
 };
