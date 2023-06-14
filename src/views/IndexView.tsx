@@ -1,13 +1,13 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { PaperButton } from "../components/buttons/PaperButton";
-import { useWHFile } from "../wh-file/useWHFile";
+import { useWHFile } from "../wh-file/context/WHFileHooks";
 
 export const IndexView: React.FC = () => {
-  const { open, create, handler: whFile } = useWHFile();
+  const { open, create, handler } = useWHFile();
   const { state } = useLocation();
 
-  if (whFile) {
+  if (handler) {
     return <Navigate to={state?.location?.pathname || "/years"} />;
   }
 

@@ -1,37 +1,32 @@
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { CardContainer, CardLink } from "../../components/links/CardLink";
-import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
+import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { isCurrentMonth, months } from "../../utils/date.util";
-import { useYear } from "../../wh-file/WHFileHooks";
+import { useYear } from "../../wh-file/context/WHFileHooks";
 
 export const MonthsView: React.FC = () => {
-  const { year } = useParams();
+  const { year: iYear } = useParams();
 
-  const yearHandler = useYear(year!);
-  const { data: yearInfo, error } = useQuery(["year-info", year], yearHandler.getInfo);
+  const { year, info } = useYear(iYear!);
 
-  const yearNumber = React.useMemo(() => Number.parseInt(year!), [year]);
+  const yearNumber = React.useMemo(() => Number.parseInt(iYear!), [iYear]);
   const isToday = React.useMemo(() => isCurrentMonth(), []);
 
   React.useEffect(() => {
-    console.log("MONTHS", yearInfo);
-  }, [yearInfo]);
+    console.log("MONTHS", { year, info });
+  }, [year, info]);
 
   return (
     <Page>
-      <LoadingOverlay visible={!yearInfo} error={error} size="2xl" />
-
-      {yearInfo && (
+      {info && (
         <CardContainer
           columns={4}
           children={months.map((month, i) => (
             <CardLink
               key={month}
               to={`${i}/days`}
-              data-empty={!yearInfo[i]?.daysCount}
+              data-empty={!info[i]?.daysCount}
               data-highlight={isToday(yearNumber, i)}
               children={month}
             />

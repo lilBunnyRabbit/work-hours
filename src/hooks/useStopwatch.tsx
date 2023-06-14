@@ -1,6 +1,7 @@
 import React from "react";
 import { parseTime } from "../utils/date.util";
 import { isUndefined } from "../utils/type.util";
+import { TimeValue } from "../utils/time.util";
 
 export interface UseStopWatchProps {
   startTime?: number;
@@ -48,4 +49,38 @@ export const useStopWatch = ({ startTime: initialStartTime, endTime: initialEndT
     setStartTime,
     setEndTime,
   };
+};
+
+interface TimeValueStopwatchProps {
+  start: TimeValue;
+  end?: TimeValue;
+}
+
+export const TimeValueStopwatch: React.FC<TimeValueStopwatchProps> = ({ start, end }) => {
+  const [endTime, setEndTime] = React.useState<TimeValue>();
+
+  const interval = React.useRef<ReturnType<typeof setInterval>>();
+
+  const stop = React.useCallback(() => {
+    if (interval.current) {
+      clearInterval(interval.current);
+      interval.current = undefined;
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (!isUndefined(start)) {
+      if (!isUndefined(end)) {
+        stop();
+        setEndTime(TimeValue.now());
+      } else {
+        setEndTime(TimeValue.now());
+        interval.current = setInterval(() => setEndTime(TimeValue.now()), 1000);
+      }
+    }
+
+    return stop;
+  }, [start, end]);
+
+  return <span className="text-center" children={endTime && start.durationTo(end || endTime).toString()} />;
 };

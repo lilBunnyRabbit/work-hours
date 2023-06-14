@@ -1,31 +1,28 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { CardContainer, CardLink } from "../../components/links/CardLink";
-import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Page } from "../../components/Page";
+import { CardContainer, CardLink } from "../../components/links/CardLink";
 import { generateDays, isCurrentDay } from "../../utils/date.util";
-import { useMonthQuery } from "../../wh-file/WHFileQueries";
+import { useMonth } from "../../wh-file/context/WHFileHooks";
 
 export const DaysView: React.FC = () => {
-  const { year, month } = useParams();
+  const { year: iYear, month: iMonth } = useParams();
 
-  const { data: monthData, error } = useMonthQuery(year!, month!);
+  const { month } = useMonth(iYear!, iMonth!);
 
-  const days = React.useMemo(() => generateDays(Number(year), Number(month)), [month, year]);
+  const days = React.useMemo(() => generateDays(Number(iYear), Number(iMonth)), [iMonth, iYear]);
 
-  const yearNumber = React.useMemo(() => Number.parseInt(year!), [year]);
-  const monthNumber = React.useMemo(() => Number.parseInt(month!), [month]);
+  const yearNumber = React.useMemo(() => Number.parseInt(iYear!), [iYear]);
+  const monthNumber = React.useMemo(() => Number.parseInt(iMonth!), [iMonth]);
   const isToday = React.useMemo(() => isCurrentDay(), []);
 
   React.useEffect(() => {
-    console.log("DAYS", monthData);
-  }, [monthData]);
+    console.log("DAYS", { month });
+  }, [month]);
 
   return (
     <Page>
-      <LoadingOverlay visible={!monthData} error={error} size="2xl" />
-
-      {monthData && (
+      {month && (
         <CardContainer
           columns={7}
           children={days.map(({ day, active }, i) => (
@@ -33,8 +30,8 @@ export const DaysView: React.FC = () => {
               key={i}
               to={`${day}`}
               data-disabled={!active}
-              data-empty={!(day in monthData)}
-              data-full={!!monthData[day]?.report}
+              data-empty={!(day in month)}
+              data-full={!!month[day]?.report}
               data-highlight={isToday(yearNumber, monthNumber, day)}
               children={day + 1}
             />

@@ -1,5 +1,5 @@
-import * as WHFile_0_0_0 from "../versions/whf_0_0_0";
-import * as WHFile_0_1_0 from "../versions/whf_0_1_0";
+import * as WHFile_0_0_0 from "../types/versions/WHFile_0_0_0";
+import * as WHFile_0_1_0 from "../types/versions/WHFile_0_1_0";
 
 function forYears(
   years: WHFile_0_0_0.Years,
@@ -53,7 +53,7 @@ export const dateToTimeValue = (date: Date): WHFile_0_1_0.Day["workLogs"][number
   return `${padNumber(date.getHours())}:${padNumber(date.getMinutes())}:${padNumber(date.getSeconds())}`;
 };
 
-export default function migration_0_0_0(data: WHFile_0_0_0.default): WHFile_0_1_0.default {
+export default function migration_0_1_0(data: WHFile_0_0_0.default): WHFile_0_1_0.default {
   const years: WHFile_0_1_0.Years = {};
 
   if (data.years) {
@@ -73,8 +73,9 @@ export default function migration_0_0_0(data: WHFile_0_0_0.default): WHFile_0_1_
   }
 
   return {
-    ...WHFile_0_1_0.INITIAL_DATA,
+    __version: WHFile_0_1_0.VERSION,
     __lastUpdated: Date.now(),
+    ...WHFile_0_1_0.INITIAL_DATA,
     years,
   };
 }

@@ -3,7 +3,7 @@ import { Icon } from "../components/icons";
 import { useAutoQueue } from "../hooks/useAutoQueue";
 import { classNames } from "../utils/class.util";
 import { createEventHandler, useEventHandler } from "../utils/event.util";
-import { useWHFile } from "../wh-file/useWHFile";
+import { useWHFile } from "../wh-file/context/WHFileHooks";
 import "./Toolbar.scss";
 
 export interface NotificationEvent {
@@ -24,7 +24,7 @@ export const fileEventHandler = createEventHandler<FileEvent>("file");
 export const sendFileEvent = fileEventHandler.dispatch;
 
 export const Toolbar: React.FC = () => {
-  const { metadata } = useWHFile();
+  const { handler } = useWHFile();
 
   const [writingFile, setWritingFile] = React.useState(false);
 
@@ -47,7 +47,9 @@ export const Toolbar: React.FC = () => {
 
   return (
     <div className="toolbar flex w-screen h-[26px] px-2 items-center justify-between text-xs leading-[100%] text-zinc-400 font-light bg-[#101012] border-t border-t-zinc-700">
-      <div>{metadata && <ToolbarItem icon={writingFile ? Icon.FileText : Icon.File} children={metadata.name} />}</div>
+      <div>
+        {handler && <ToolbarItem icon={writingFile ? Icon.FileText : Icon.File} children={handler.metadata.name} />}
+      </div>
 
       {notification && (
         <div

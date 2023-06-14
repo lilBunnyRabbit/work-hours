@@ -1,7 +1,7 @@
 import React from "react";
-import { useStopWatch, UseStopWatchProps } from "../../../hooks/useStopwatch";
+import { TimeValueStopwatch } from "../../../hooks/useStopwatch";
 import { classNames } from "../../../utils/class.util";
-import { dateToTimeValue, formatTime, TimeValue, timeValueToDate } from "../../../utils/date.util";
+import { TimeShortString, TimeValue } from "../../../utils/time.util";
 import { WHFile } from "../../../wh-file/types/WHFileTypes";
 import { IconButton } from "../../buttons/IconButton";
 import { PaperButton } from "../../buttons/PaperButton";
@@ -21,25 +21,12 @@ export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange 
 
   const [note, setNote] = React.useState<string>(workLog.note || "");
 
-  const { fromDate, toDate, from, to } = React.useMemo(() => {
-    const fromDate = new Date(workLog.from);
-    const toDate = workLog.to ? new Date(workLog.to) : undefined;
-
+  const { from, to } = React.useMemo(() => {
     return {
-      fromDate,
-      toDate,
-      from: dateToTimeValue(fromDate),
-      to: toDate ? dateToTimeValue(toDate) : undefined,
+      from: workLog.from ? TimeValue.from(workLog.from) : TimeValue.now(),
+      to: workLog.to ? TimeValue.from(workLog.to) : undefined,
     };
   }, [workLog]);
-
-  const stopWatchProps: UseStopWatchProps = React.useMemo(
-    () => ({
-      startTime: fromDate.getTime(),
-      endTime: toDate?.getTime(),
-    }),
-    [fromDate, toDate]
-  );
 
   const icon = React.useMemo(() => {
     return React.createElement(editing ? Icon.Save : Icon.Edit, {
@@ -89,29 +76,25 @@ export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange 
       >
         <input
           type="time"
-          min="00:00"
-          max={to || "24:00"}
-          defaultValue={from || ""}
-          onChange={(e) => handleChange({ from: timeValueToDate(e.target.value as TimeValue).toISOString() })}
+          defaultValue={from?.toShortString() || ""}
+          onChange={(e) => handleChange({ from: TimeValue.from(e.target.value as TimeShortString).toString() })}
         />
 
         {to ? (
           <input
             type="time"
-            min={from || "00:00"}
-            max="24:00"
-            defaultValue={to || ""}
-            onChange={(e) => handleChange({ to: timeValueToDate(e.target.value as TimeValue).toISOString() })}
+            defaultValue={to?.toShortString() || ""}
+            onChange={(e) => handleChange({ to: TimeValue.from(e.target.value as TimeShortString).toString() })}
           />
         ) : (
           <LogInputButton
             variant="success"
-            onClick={() => handleChange({ to: new Date().toISOString() })}
+            onClick={() => handleChange({ to: TimeValue.now().toString() })}
             children="STOP"
           />
         )}
 
-        <TimeDisplay {...stopWatchProps} />
+        <TimeValueStopwatch start={from} end={to} />
 
         <div className="flex flex-row items-center gap-2">
           <IconButton
@@ -143,9 +126,4 @@ export const LogInput: React.FC<LogInputProps> = ({ workLog, onDelete, onChange 
 
 const LogInputButton: React.FC<React.ComponentProps<typeof PaperButton>> = ({ className, ...props }) => {
   return <PaperButton className={classNames("p-0 h-[28px] w-[75.19px]", className)} {...props} />;
-};
-
-const TimeDisplay: React.FC<UseStopWatchProps> = (props) => {
-  const { time } = useStopWatch(props);
-  return <span className="text-center text-lg" children={formatTime(time)} />;
 };
